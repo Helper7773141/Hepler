@@ -103,11 +103,28 @@
             max-height: 5000px;
             opacity: 1;
         }
-        .book-item {
+
+        /* ----- НОВАЯ СТРУКТУРА ПУНКТА ----- */
+        .item-row {
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 8px 0 8px 4px;
+            padding: 3px 0;
+            margin: 0;
+        }
+        .item-num {
+            font-weight: 400;
+            font-size: 14px;
+            color: #6b7a8f;
+            min-width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+            margin-top: 6px;
+            background: transparent;
+        }
+        .item-text {
+            flex: 1;
+            padding: 8px 0 8px 20px;
             margin: 3px 0;
             border-radius: 8px;
             background: #f8fafc;
@@ -115,46 +132,15 @@
             font-size: 15px;
             line-height: 1.5;
         }
-        .book-item:last-of-type {
-            margin-bottom: 10px;
-        }
-        .book-item .num {
-            font-weight: 400;
-            font-size: 14px;
-            color: #6b7a8f;
-            min-width: 28px;
-            text-align: center;
-            flex-shrink: 0;
-            margin-top: 0px;
-            line-height: 1.5;
-        }
-        .book-item .text {
-            flex: 1;
-        }
-        .book-item .text i {
+        .item-text i {
             font-style: italic;
             color: #0b1a33;
         }
-        .book-item .text b {
+        .item-text b {
             font-weight: 700;
             color: #0b1a33;
         }
-        .book-item .text .sub {
-            font-weight: 600;
-            color: #0b1a33;
-        }
-        .book-item .text .center-head {
-            display: block;
-            text-align: center;
-            font-weight: 700;
-            font-size: 16px;
-            color: #0b1a33;
-            margin: 6px 0 4px 0;
-            padding: 4px 0;
-            background: #f1f4f9;
-            border-radius: 6px;
-        }
-        .book-item .text .section-title {
+        .item-text .section-title {
             font-weight: 700;
             font-size: 15px;
             color: #0b1a33;
@@ -183,7 +169,7 @@
 
     <script>
         // ============================================================
-        // ДАННЫЕ (исправлено: THINKING разбит на два раздела)
+        // ДАННЫЕ (полные, все книги и пункты)
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
@@ -401,122 +387,110 @@
         }
 
         function renderBooks(filterText = '') {
-    const lowerFilter = filterText.toLowerCase().trim();
-    container.innerHTML = '';
-    let visibleCount = 0;
+            const lowerFilter = filterText.toLowerCase().trim();
+            container.innerHTML = '';
+            let visibleCount = 0;
 
-    document.querySelectorAll('.book-items').forEach(el => el.classList.remove('open'));
-    document.querySelectorAll('.book-header').forEach(el => el.classList.remove('open'));
-
-    library.forEach((book) => {
-        const titleMatch = book.title.toLowerCase().includes(lowerFilter);
-        const itemsMatch = book.items.some(item => item.toLowerCase().includes(lowerFilter));
-        const match = titleMatch || itemsMatch;
-
-        const bookDiv = document.createElement('div');
-        bookDiv.className = 'book';
-        if (!match && lowerFilter !== '') {
-            bookDiv.classList.add('hidden');
-        } else {
-            visibleCount++;
-        }
-
-        const header = document.createElement('div');
-        header.className = 'book-header';
-        const titleSpan = document.createElement('span');
-        titleSpan.className = 'book-title';
-        titleSpan.textContent = book.title;
-        const arrowSpan = document.createElement('span');
-        arrowSpan.className = 'book-arrow';
-        arrowSpan.textContent = '▼';
-        header.appendChild(titleSpan);
-        header.appendChild(arrowSpan);
-
-        const itemsDiv = document.createElement('div');
-        itemsDiv.className = 'book-items';
-
-        book.items.forEach((text, idx) => {
-            const itemWrapper = document.createElement('div');
-            itemWrapper.style.display = 'flex';
-            itemWrapper.style.alignItems = 'flex-start';
-            itemWrapper.style.gap = '12px';
-            itemWrapper.style.padding = '4px 0';
-            itemWrapper.style.margin = '0';
-
-            const numSpan = document.createElement('span');
-            numSpan.className = 'num';
-            numSpan.style.fontWeight = '400';
-            numSpan.style.fontSize = '14px';
-            numSpan.style.color = '#6b7a8f';
-            numSpan.style.minWidth = '28px';
-            numSpan.style.textAlign = 'center';
-            numSpan.style.flexShrink = '0';
-            numSpan.style.marginTop = '4px';
-            numSpan.style.background = 'transparent';
-
-            const isSection = text.includes('section-title');
-            if (isSection) {
-                numSpan.textContent = '';
-            } else {
-                numSpan.textContent = (idx + 1) + '.';
-            }
-
-            const textSpan = document.createElement('span');
-            textSpan.className = 'text';
-            textSpan.style.flex = '1';
-            textSpan.style.padding = '8px 0 8px 20px';
-            textSpan.style.margin = '3px 0';
-            textSpan.style.borderRadius = '8px';
-            textSpan.style.background = '#f8fafc';
-            textSpan.style.color = '#1e293b';
-            textSpan.style.fontSize = '15px';
-            textSpan.style.lineHeight = '1.5';
-
-            if (lowerFilter && (titleMatch || itemsMatch)) {
-                textSpan.innerHTML = highlightText(text, filterText);
-            } else {
-                textSpan.innerHTML = text;
-            }
-
-            itemWrapper.appendChild(numSpan);
-            itemWrapper.appendChild(textSpan);
-            itemsDiv.appendChild(itemWrapper);
-        });
-
-        header.addEventListener('click', () => {
-            const isOpen = itemsDiv.classList.contains('open');
             document.querySelectorAll('.book-items').forEach(el => el.classList.remove('open'));
             document.querySelectorAll('.book-header').forEach(el => el.classList.remove('open'));
-            if (!isOpen) {
-                itemsDiv.classList.add('open');
-                header.classList.add('open');
-            }
-        });
 
-        bookDiv.appendChild(header);
-        bookDiv.appendChild(itemsDiv);
-        container.appendChild(bookDiv);
-    });
+            library.forEach((book) => {
+                const titleMatch = book.title.toLowerCase().includes(lowerFilter);
+                const itemsMatch = book.items.some(item => item.toLowerCase().includes(lowerFilter));
+                const match = titleMatch || itemsMatch;
 
-    countDisplay.textContent = visibleCount;
-
-    if (lowerFilter) {
-        document.querySelectorAll('.book-item .text').forEach(item => {
-            if (item.querySelector('.highlight')) {
-                item.style.transition = 'background 0.2s';
-                item.style.background = 'rgba(0, 120, 255, 0.2)';
-                setTimeout(() => { item.style.background = '#f8fafc'; }, 600);
-            }
-        });
-        document.querySelectorAll('.book').forEach((bookEl) => {
-            if (!bookEl.classList.contains('hidden')) {
-                const header = bookEl.querySelector('.book-header');
-                const items = bookEl.querySelector('.book-items');
-                if (header && items) {
-                    items.classList.add('open');
-                    header.classList.add('open');
+                const bookDiv = document.createElement('div');
+                bookDiv.className = 'book';
+                if (!match && lowerFilter !== '') {
+                    bookDiv.classList.add('hidden');
+                } else {
+                    visibleCount++;
                 }
+
+                // Шапка
+                const header = document.createElement('div');
+                header.className = 'book-header';
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'book-title';
+                titleSpan.textContent = book.title;
+                const arrowSpan = document.createElement('span');
+                arrowSpan.className = 'book-arrow';
+                arrowSpan.textContent = '▼';
+                header.appendChild(titleSpan);
+                header.appendChild(arrowSpan);
+
+                // Пункты
+                const itemsDiv = document.createElement('div');
+                itemsDiv.className = 'book-items';
+
+                book.items.forEach((text, idx) => {
+                    const row = document.createElement('div');
+                    row.className = 'item-row';
+
+                    // Цифра снаружи (на белом фоне)
+                    const numSpan = document.createElement('span');
+                    numSpan.className = 'item-num';
+                    const isSection = text.includes('section-title');
+                    numSpan.textContent = isSection ? '' : (idx + 1) + '.';
+
+                    // Текст (в сером блоке)
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'item-text';
+                    if (lowerFilter && (titleMatch || itemsMatch)) {
+                        textSpan.innerHTML = highlightText(text, filterText);
+                    } else {
+                        textSpan.innerHTML = text;
+                    }
+
+                    row.appendChild(numSpan);
+                    row.appendChild(textSpan);
+                    itemsDiv.appendChild(row);
+                });
+
+                header.addEventListener('click', () => {
+                    const isOpen = itemsDiv.classList.contains('open');
+                    document.querySelectorAll('.book-items').forEach(el => el.classList.remove('open'));
+                    document.querySelectorAll('.book-header').forEach(el => el.classList.remove('open'));
+                    if (!isOpen) {
+                        itemsDiv.classList.add('open');
+                        header.classList.add('open');
+                    }
+                });
+
+                bookDiv.appendChild(header);
+                bookDiv.appendChild(itemsDiv);
+                container.appendChild(bookDiv);
+            });
+
+            countDisplay.textContent = visibleCount;
+
+            if (lowerFilter) {
+                document.querySelectorAll('.item-text').forEach(item => {
+                    if (item.querySelector('.highlight')) {
+                        item.style.transition = 'background 0.2s';
+                        item.style.background = 'rgba(0, 120, 255, 0.2)';
+                        setTimeout(() => { item.style.background = '#f8fafc'; }, 600);
+                    }
+                });
+                document.querySelectorAll('.book').forEach((bookEl) => {
+                    if (!bookEl.classList.contains('hidden')) {
+                        const header = bookEl.querySelector('.book-header');
+                        const items = bookEl.querySelector('.book-items');
+                        if (header && items) {
+                            items.classList.add('open');
+                            header.classList.add('open');
+                        }
+                    }
+                });
             }
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => renderBooks(e.target.value), 150);
         });
-    }
-}
+
+        renderBooks();
+    </script>
+</body>
+</html>
