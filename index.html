@@ -468,12 +468,12 @@
                 });
 
                 // ============================================================
-                // КЛИК С ПЛАВНЫМ СКРОЛЛОМ К ЗАГОЛОВКУ
+                // КЛИК С ПЛАВНЫМ ЗАКРЫТИЕМ/ОТКРЫТИЕМ + ПРОКРУТКА
                 // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
 
-                    // Закрываем все другие
+                    // Закрываем все остальные
                     document.querySelectorAll('.book-items').forEach(el => {
                         if (el !== itemsDiv) {
                             el.classList.remove('open');
@@ -486,19 +486,21 @@
                     });
 
                     if (!isOpen) {
-                        // Открываем текущий
-                        itemsDiv.classList.add('open');
-                        header.classList.add('open');
-
-                        // Плавно скроллим к заголовку этой книги
+                        // Открываем текущий с задержкой
                         setTimeout(() => {
-                            const rect = header.getBoundingClientRect();
-                            const offset = 20; // отступ сверху
-                            window.scrollTo({
-                                top: window.scrollY + rect.top - offset,
-                                behavior: 'smooth'
-                            });
-                        }, 100);
+                            itemsDiv.classList.add('open');
+                            header.classList.add('open');
+
+                            // Плавно скроллим к заголовку
+                            setTimeout(() => {
+                                const rect = header.getBoundingClientRect();
+                                const offset = 20;
+                                window.scrollTo({
+                                    top: window.scrollY + rect.top - offset,
+                                    behavior: 'smooth'
+                                });
+                            }, 80);
+                        }, 160);
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
