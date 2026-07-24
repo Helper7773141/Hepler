@@ -468,7 +468,7 @@
                 });
 
                 // ============================================================
-                // КЛИК С ПЛАВНЫМ ЗАКРЫТИЕМ/ОТКРЫТИЕМ + ПРОКРУТКА
+                // КЛИК — ИСПРАВЛЕННЫЙ
                 // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
@@ -486,12 +486,12 @@
                     });
 
                     if (!isOpen) {
-                        // Открываем текущий с задержкой
-                        setTimeout(() => {
-                            itemsDiv.classList.add('open');
-                            header.classList.add('open');
+                        // Открываем текущий
+                        itemsDiv.classList.add('open');
+                        header.classList.add('open');
 
-                            // Плавно скроллим к заголовку
+                        // Ждём отрисовки и скроллим
+                        requestAnimationFrame(() => {
                             setTimeout(() => {
                                 const rect = header.getBoundingClientRect();
                                 const offset = 20;
@@ -499,8 +499,8 @@
                                     top: window.scrollY + rect.top - offset,
                                     behavior: 'smooth'
                                 });
-                            }, 80);
-                        }, 160);
+                            }, 200);
+                        });
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
