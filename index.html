@@ -468,7 +468,7 @@
                 });
 
                 // ============================================================
-                // КЛИК — ИСПРАВЛЕННЫЙ
+                // КЛИК — ИСПРАВЛЕННЫЙ (скролл к bookDiv с повторными попытками)
                 // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
@@ -490,17 +490,37 @@
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
 
-                        // Ждём отрисовки и скроллим
-                        requestAnimationFrame(() => {
-                            setTimeout(() => {
-                                const rect = header.getBoundingClientRect();
-                                const offset = 20;
+                        // Ждём стабильного положения с двойной проверкой
+                        let attempts = 0;
+                        const maxAttempts = 5;
+                        const interval = 50;
+
+                        function tryScroll() {
+                            attempts++;
+                            const rect = bookDiv.getBoundingClientRect();
+                            // Проверяем, что блок действительно отрисовался и не двигается
+                            if (rect.height > 0 && attempts < maxAttempts) {
+                                const offset = 30;
                                 window.scrollTo({
                                     top: window.scrollY + rect.top - offset,
                                     behavior: 'smooth'
                                 });
-                            }, 200);
-                        });
+                            } else if (attempts < maxAttempts) {
+                                // Если ещё не стабилизировалось, пробуем снова
+                                setTimeout(tryScroll, interval);
+                            } else {
+                                // Последняя попытка уже по факту
+                                const finalRect = bookDiv.getBoundingClientRect();
+                                const offset = 30;
+                                window.scrollTo({
+                                    top: window.scrollY + finalRect.top - offset,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+
+                        // Начинаем попытки после минимальной задержки
+                        setTimeout(tryScroll, 150);
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
