@@ -110,7 +110,7 @@
             gap: 6px;
             padding: 2px 0;
             margin: 0;
-            padding-left: 2px; /* ← ещё меньше */
+            padding-left: 2px;
         }
         .item-num {
             font-weight: 400;
@@ -169,7 +169,7 @@
 
     <script>
         // ============================================================
-        // ДАННЫЕ — THINKING с правильной нумерацией
+        // ДАННЫЕ (без изменений)
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
@@ -467,13 +467,41 @@
                     itemsDiv.appendChild(row);
                 });
 
+                // ============================================================
+                // КЛИК С ПЛАВНЫМ СКРОЛЛОМ К ЗАГОЛОВКУ
+                // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
-                    document.querySelectorAll('.book-items').forEach(el => el.classList.remove('open'));
-                    document.querySelectorAll('.book-header').forEach(el => el.classList.remove('open'));
+
+                    // Закрываем все другие
+                    document.querySelectorAll('.book-items').forEach(el => {
+                        if (el !== itemsDiv) {
+                            el.classList.remove('open');
+                        }
+                    });
+                    document.querySelectorAll('.book-header').forEach(el => {
+                        if (el !== header) {
+                            el.classList.remove('open');
+                        }
+                    });
+
                     if (!isOpen) {
+                        // Открываем текущий
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
+
+                        // Плавно скроллим к заголовку этой книги
+                        setTimeout(() => {
+                            const rect = header.getBoundingClientRect();
+                            const offset = 20; // отступ сверху
+                            window.scrollTo({
+                                top: window.scrollY + rect.top - offset,
+                                behavior: 'smooth'
+                            });
+                        }, 100);
+                    } else {
+                        itemsDiv.classList.remove('open');
+                        header.classList.remove('open');
                     }
                 });
 
