@@ -468,7 +468,7 @@
                 });
 
                 // ============================================================
-                // КЛИК — ИСПРАВЛЕННЫЙ (скролл к bookDiv с повторными попытками)
+                // КЛИК — ПРОСТОЙ И НАДЁЖНЫЙ
                 // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
@@ -490,37 +490,15 @@
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
 
-                        // Ждём стабильного положения с двойной проверкой
-                        let attempts = 0;
-                        const maxAttempts = 5;
-                        const interval = 50;
-
-                        function tryScroll() {
-                            attempts++;
+                        // Даём браузеру время на отрисовку и скроллим к книге
+                        setTimeout(() => {
                             const rect = bookDiv.getBoundingClientRect();
-                            // Проверяем, что блок действительно отрисовался и не двигается
-                            if (rect.height > 0 && attempts < maxAttempts) {
-                                const offset = 30;
-                                window.scrollTo({
-                                    top: window.scrollY + rect.top - offset,
-                                    behavior: 'smooth'
-                                });
-                            } else if (attempts < maxAttempts) {
-                                // Если ещё не стабилизировалось, пробуем снова
-                                setTimeout(tryScroll, interval);
-                            } else {
-                                // Последняя попытка уже по факту
-                                const finalRect = bookDiv.getBoundingClientRect();
-                                const offset = 30;
-                                window.scrollTo({
-                                    top: window.scrollY + finalRect.top - offset,
-                                    behavior: 'smooth'
-                                });
-                            }
-                        }
-
-                        // Начинаем попытки после минимальной задержки
-                        setTimeout(tryScroll, 150);
+                            const offset = 30;
+                            window.scrollTo({
+                                top: window.scrollY + rect.top - offset,
+                                behavior: 'smooth'
+                            });
+                        }, 350);
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
