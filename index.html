@@ -110,7 +110,7 @@
             gap: 6px;
             padding: 2px 0;
             margin: 0;
-            padding-left: 5px; /* ← сократил в 2 раза (было 10px) */
+            padding-left: 2px; /* ← ещё меньше */
         }
         .item-num {
             font-weight: 400;
@@ -169,7 +169,7 @@
 
     <script>
         // ============================================================
-        // ДАННЫЕ — все цифры только слева, внутри текста чисто
+        // ДАННЫЕ — THINKING с правильной нумерацией
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
@@ -421,14 +421,38 @@
                 const itemsDiv = document.createElement('div');
                 itemsDiv.className = 'book-items';
 
-                book.items.forEach((text, idx) => {
+                let clearIdx = 0;
+                let fastIdx = 0;
+                let isFast = false;
+
+                book.items.forEach((text) => {
                     const row = document.createElement('div');
                     row.className = 'item-row';
 
                     const numSpan = document.createElement('span');
                     numSpan.className = 'item-num';
+
                     const isSection = text.includes('section-title');
-                    numSpan.textContent = isSection ? '' : (idx + 1) + '.';
+                    if (isSection) {
+                        if (text.includes('Think fast and slow')) {
+                            isFast = true;
+                            clearIdx = 0;
+                            fastIdx = 0;
+                        } else {
+                            isFast = false;
+                            clearIdx = 0;
+                            fastIdx = 0;
+                        }
+                        numSpan.textContent = '';
+                    } else {
+                        if (isFast) {
+                            fastIdx++;
+                            numSpan.textContent = fastIdx + '.';
+                        } else {
+                            clearIdx++;
+                            numSpan.textContent = clearIdx + '.';
+                        }
+                    }
 
                     const textSpan = document.createElement('span');
                     textSpan.className = 'item-text';
