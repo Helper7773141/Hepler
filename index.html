@@ -97,7 +97,7 @@
             overflow: hidden;
             opacity: 0;
             transition: max-height 0.35s ease, opacity 0.25s ease;
-            padding-left: 16px;
+            padding-left: 0;
         }
         .book-items.open {
             max-height: 5000px;
@@ -107,24 +107,25 @@
         .item-row {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            padding: 3px 0;
+            gap: 6px;
+            padding: 2px 0;
             margin: 0;
+            padding-left: 10px;
         }
         .item-num {
             font-weight: 400;
             font-size: 14px;
             color: #6b7a8f;
-            min-width: 28px;
-            text-align: center;
+            min-width: 24px;
+            text-align: right;
             flex-shrink: 0;
             margin-top: 6px;
             background: transparent;
         }
         .item-text {
             flex: 1;
-            padding: 8px 0 8px 20px;
-            margin: 3px 0;
+            padding: 6px 0 6px 12px;
+            margin: 2px 0;
             border-radius: 8px;
             background: #f8fafc;
             color: #1e293b;
@@ -144,7 +145,7 @@
             font-size: 15px;
             color: #0b1a33;
             display: block;
-            margin: 6px 0 2px 0;
+            margin: 4px 0 2px 0;
             padding-left: 4px;
         }
         .highlight {
@@ -168,7 +169,7 @@
 
     <script>
         // ============================================================
-        // ДАННЫЕ — ВСЕ ЦИФРЫ УБРАНЫ ИЗ ТЕКСТА
+        // ДАННЫЕ — без цифр в тексте, всё чисто
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
