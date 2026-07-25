@@ -44,13 +44,12 @@
         .highlight { background: rgba(0,120,255,0.25); border-radius: 4px; padding: 0 2px; }
         .hidden { display: none; }
         
-        /* ===== СТРАНИЦА NETFLIX+ (ШАПКА УБРАНА НАВСЕГДА) ===== */
+        /* ===== СТРАНИЦА NETFLIX+ ===== */
         .netflix-page { display: none; padding: 10px 0 30px; }
         .netflix-page.active { display: block; }
-        /* УБИРАЕМ ШАПКУ ФИЗИЧЕСКИ */
         .netflix-page .header-row { display: none !important; }
         
-        .netflix-back { background: none; border: none; font-size: 20px; color: #0b1a33; cursor: pointer; padding: 4px 0; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        .netflix-back { background: none; border: none; font-size: 20px; color: #0b1a33; cursor: pointer; padding: 4px 0; margin-bottom: 6px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
         .netflix-back:hover { opacity: 0.6; }
         .netflix-title { text-align: center; font-size: 32px; font-weight: 700; color: #0b1a33; margin-bottom: 20px; }
         .netflix-toc { background: #f8fafc; border-radius: 16px; padding: 16px 20px; margin-bottom: 30px; }
@@ -58,18 +57,26 @@
         .netflix-toc a { display: block; padding: 6px 0; color: #0b1a33; text-decoration: none; font-weight: 500; font-size: 15px; border-bottom: 1px solid #edf2f7; transition: opacity 0.2s; }
         .netflix-toc a:last-child { border-bottom: none; }
         .netflix-toc a:hover { opacity: 0.6; }
+        
+        /* СТАТЬИ — БЕЗ БОЛЬШИХ ЦИФР */
         .netflix-article { margin-bottom: 30px; scroll-margin-top: 20px; }
         .netflix-article:last-child { margin-bottom: 0; }
-        .netflix-article .num { text-align: center; font-size: 18px; font-weight: 700; color: #0b1a33; margin-bottom: 4px; }
         .netflix-article .heading { text-align: center; font-size: 20px; font-weight: 700; color: #0b1a33; margin-bottom: 12px; }
         .netflix-article .text { font-size: 15px; line-height: 1.6; color: #1e293b; white-space: pre-wrap; }
         .netflix-divider { border: none; border-top: 1px solid #e2e8f0; margin: 30px 0; }
-        @media (max-width: 600px) { .app { padding: 20px 16px; border-radius: 16px; } .header-center h1 { font-size: 28px; } .menu-btn { font-size: 24px; } .netflix-title { font-size: 26px; } .netflix-article .heading { font-size: 18px; } .netflix-back { font-size: 18px; } }
+
+        @media (max-width: 600px) { 
+            .app { padding: 20px 16px; border-radius: 16px; } 
+            .header-center h1 { font-size: 28px; } 
+            .menu-btn { font-size: 24px; } 
+            .netflix-title { font-size: 26px; } 
+            .netflix-article .heading { font-size: 18px; } 
+            .netflix-back { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- ===== ШАПКА (только на главной) ===== -->
         <div class="header-row" id="mainHeader">
             <button class="menu-btn" id="menuToggle" aria-label="Меню">☰</button>
             <div class="header-center">
@@ -78,13 +85,11 @@
             </div>
         </div>
 
-        <!-- ===== ГЛАВНАЯ ===== -->
         <div id="mainPage">
             <input type="text" class="search-box" id="searchInput" placeholder="Поиск по названию или содержанию..." />
             <div id="bookContainer"></div>
         </div>
 
-        <!-- ===== NETFLIX+ (шапка УБРАНА через CSS) ===== -->
         <div class="netflix-page" id="netflixPage">
             <button class="netflix-back" id="netflixBack">← Назад</button>
             <div class="netflix-title">Netflix+</div>
@@ -95,7 +100,6 @@
         </div>
     </div>
 
-    <!-- ===== МЕНЮ ===== -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="menu-panel" id="menuPanel">
         <button class="menu-close" id="menuClose">✕</button>
@@ -367,7 +371,7 @@
             { title: "МЫ НЕ СЕМЬЯ", text: `На протяжении многих веков ремесла передавались из поколения в поколение, а бизнес был почти исключительно семейным. Неудивительно, что метафора семьи до сих пор так популярна в деловом мире. Семья символизирует верность, сплоченность, постоянную взаимовыручку. Но в семье тебя принимают любым, даже если ты будешь нести всеобщий вред и усложнять всем жизнь.` }
         ];
 
-        // ===== РЕНДЕР NETFLIX+ =====
+        // ===== РЕНДЕР NETFLIX+ (БЕЗ БОЛЬШИХ ЦИФР) =====
         const netflixPage = document.getElementById('netflixPage');
         const netflixToc = document.getElementById('netflixToc');
         const netflixArticlesContainer = document.getElementById('netflixArticles');
@@ -375,6 +379,7 @@
         const mainPage = document.getElementById('mainPage');
         const mainHeader = document.getElementById('mainHeader');
 
+        // Оглавление (с цифрами)
         netflixArticles.forEach((article, index) => {
             const a = document.createElement('a');
             a.href = `#article-${index}`;
@@ -382,27 +387,29 @@
             netflixToc.appendChild(a);
         });
 
+        // Статьи (без цифр)
         netflixArticles.forEach((article, index) => {
             const wrapper = document.createElement('div');
             wrapper.className = 'netflix-article';
             wrapper.id = `article-${index}`;
-            const num = document.createElement('div');
-            num.className = 'num';
-            num.textContent = `${index + 1}.`;
+
             const heading = document.createElement('div');
             heading.className = 'heading';
             heading.textContent = article.title;
+
             const text = document.createElement('div');
             text.className = 'text';
             text.textContent = article.text;
-            wrapper.appendChild(num);
+
             wrapper.appendChild(heading);
             wrapper.appendChild(text);
+
             if (index < netflixArticles.length - 1) {
                 const divider = document.createElement('hr');
                 divider.className = 'netflix-divider';
                 wrapper.appendChild(divider);
             }
+
             netflixArticlesContainer.appendChild(wrapper);
         });
 
@@ -412,13 +419,8 @@
         const menuPanel = document.getElementById('menuPanel');
         const menuClose = document.getElementById('menuClose');
 
-        function openMenu() { menuOverlay.classList.add('open');
-            menuPanel.classList.add('open');
-            document.body.style.overflow = 'hidden'; }
-
-        function closeMenu() { menuOverlay.classList.remove('open');
-            menuPanel.classList.remove('open');
-            document.body.style.overflow = ''; }
+        function openMenu() { menuOverlay.classList.add('open'); menuPanel.classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeMenu() { menuOverlay.classList.remove('open'); menuPanel.classList.remove('open'); document.body.style.overflow = ''; }
 
         menuToggle.addEventListener('click', () => {
             if (menuPanel.classList.contains('open')) closeMenu();
@@ -427,7 +429,6 @@
         menuOverlay.addEventListener('click', closeMenu);
         menuClose.addEventListener('click', closeMenu);
 
-        // ===== ОТКРЫТИЕ NETFLIX+ =====
         document.querySelector('.menu-item[data-target="netflix"]').addEventListener('click', () => {
             closeMenu();
             mainPage.style.display = 'none';
@@ -436,7 +437,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ===== НАЗАД =====
         netflixBack.addEventListener('click', () => {
             netflixPage.classList.remove('active');
             mainPage.style.display = 'block';
@@ -444,7 +444,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ===== СКРОЛЛ ПО ССЫЛКАМ =====
         document.querySelectorAll('.netflix-toc a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
