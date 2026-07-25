@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helper</title>
     <style>
-        /* ===== БАЗА ===== */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +28,6 @@
             overflow: hidden;
         }
 
-        /* ===== ШАПКА (только на главной) ===== */
         .header-row {
             display: flex;
             align-items: center;
@@ -71,7 +69,6 @@
             margin-top: -2px;
         }
 
-        /* ===== МЕНЮ ===== */
         .menu-overlay {
             position: fixed;
             top: 0;
@@ -138,7 +135,6 @@
             margin-left: 8px;
         }
 
-        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
         .search-box {
             width: 100%;
             padding: 14px 20px;
@@ -155,6 +151,7 @@
             border-color: #0b1a33;
             background: #fff;
         }
+
         .book {
             border-bottom: 1px solid #edf2f7;
         }
@@ -199,6 +196,7 @@
             max-height: 5000px;
             opacity: 1;
         }
+
         .item-row {
             display: flex;
             align-items: flex-start;
@@ -270,6 +268,11 @@
             display: block;
         }
 
+        /* ===== СКРЫВАЕМ ШАПКУ НА СТРАНИЦЕ NETFLIX+ ===== */
+        .netflix-page.active ~ #mainHeader {
+            display: none;
+        }
+
         .netflix-back {
             background: none;
             border: none;
@@ -294,7 +297,6 @@
             margin-bottom: 20px;
         }
 
-        /* Навигация по статьям */
         .netflix-toc {
             background: #f8fafc;
             border-radius: 16px;
@@ -324,7 +326,6 @@
             opacity: 0.6;
         }
 
-        /* Статья */
         .netflix-article {
             margin-bottom: 30px;
             scroll-margin-top: 20px;
@@ -358,7 +359,6 @@
             margin: 30px 0;
         }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 600px) {
             .app {
                 padding: 20px 16px;
@@ -384,8 +384,7 @@
 </head>
 <body>
     <div class="app">
-
-        <!-- ===== ШАПКА (только на главной) ===== -->
+        <!-- ШАПКА -->
         <div class="header-row" id="mainHeader">
             <button class="menu-btn" id="menuToggle" aria-label="Меню">☰</button>
             <div class="header-center">
@@ -394,30 +393,26 @@
             </div>
         </div>
 
-        <!-- ===== ГЛАВНАЯ СТРАНИЦА (книги) ===== -->
+        <!-- ГЛАВНАЯ СТРАНИЦА -->
         <div id="mainPage">
             <input type="text" class="search-box" id="searchInput" placeholder="Поиск по названию или содержанию..." />
             <div id="bookContainer"></div>
         </div>
 
-        <!-- ===== СТРАНИЦА NETFLIX+ (шапка УБРАНА полностью) ===== -->
+        <!-- СТРАНИЦА NETFLIX+ -->
         <div class="netflix-page" id="netflixPage">
             <button class="netflix-back" id="netflixBack">← Назад</button>
             <div class="netflix-title">Netflix+</div>
 
-            <!-- Содержание (кликабельные ссылки) -->
             <div class="netflix-toc" id="netflixToc">
                 <div class="netflix-toc-title">Содержание</div>
-                <!-- ссылки будут вставлены скриптом -->
             </div>
 
-            <!-- Статьи -->
             <div id="netflixArticles"></div>
         </div>
-
     </div>
 
-    <!-- ===== МЕНЮ ===== -->
+    <!-- МЕНЮ -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="menu-panel" id="menuPanel">
         <button class="menu-close" id="menuClose">✕</button>
@@ -428,7 +423,7 @@
 
     <script>
         // ============================================================
-        // ДАННЫЕ КНИГ (БЕЗ ИЗМЕНЕНИЙ)
+        // ДАННЫЕ (КНИГИ)
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
@@ -656,7 +651,7 @@
         }];
 
         // ============================================================
-        // РЕНДЕР КНИГ (без счётчика)
+        // РЕНДЕР КНИГ
         // ============================================================
         const container = document.getElementById('bookContainer');
         const searchInput = document.getElementById('searchInput');
@@ -882,7 +877,7 @@
         renderNetflix();
 
         // ============================================================
-        // НАВИГАЦИЯ: МЕНЮ -> СТРАНИЦА NETFLIX+
+        // НАВИГАЦИЯ
         // ============================================================
         const menuToggle = document.getElementById('menuToggle');
         const menuOverlay = document.getElementById('menuOverlay');
@@ -912,6 +907,7 @@
         menuOverlay.addEventListener('click', closeMenu);
         menuClose.addEventListener('click', closeMenu);
 
+        // Переход на Netflix+
         document.querySelector('.menu-item[data-target="netflix"]').addEventListener('click', () => {
             closeMenu();
             mainPage.style.display = 'none';
@@ -919,12 +915,14 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // Возврат на главную
         netflixBack.addEventListener('click', () => {
             netflixPage.classList.remove('active');
             mainPage.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // Плавный скролл по ссылкам в содержании
         document.querySelectorAll('.netflix-toc a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
