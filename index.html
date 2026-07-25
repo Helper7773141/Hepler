@@ -5,380 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helper</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f0f2f5;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .app {
-            max-width: 800px;
-            width: 100%;
-            background: #fff;
-            border-radius: 24px;
-            padding: 30px 28px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin-bottom: 4px;
-        }
-        .menu-btn {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: #0b1a33;
-            cursor: pointer;
-            padding: 4px 8px;
-            line-height: 1;
-            transition: opacity 0.2s;
-            z-index: 10;
-        }
-        .menu-btn:hover {
-            opacity: 0.6;
-        }
-        .header-center {
-            text-align: center;
-        }
-        .header-center h1 {
-            font-size: 36px;
-            font-weight: 700;
-            color: #0b1a33;
-            letter-spacing: -0.5px;
-            margin: 0;
-        }
-        .header-center .subtitle {
-            font-size: 14px;
-            color: #6b7a8f;
-            margin-top: -2px;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 999;
-        }
-        .menu-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-        .menu-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 80%;
-            max-width: 320px;
-            height: 100%;
-            background: #fff;
-            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
-            transform: translateX(-100%);
-            transition: transform 0.35s ease;
-            z-index: 1000;
-            padding: 30px 24px;
-            overflow-y: auto;
-        }
-        .menu-panel.open {
-            transform: translateX(0);
-        }
-        .menu-close {
-            background: none;
-            border: none;
-            font-size: 30px;
-            color: #0b1a33;
-            cursor: pointer;
-            margin-bottom: 30px;
-            padding: 0;
-            line-height: 1;
-        }
-        .menu-item {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0b1a33;
-            padding: 14px 0;
-            border-bottom: 1px solid #edf2f7;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-        .menu-item:hover {
-            opacity: 0.6;
-        }
-        .menu-item .sub {
-            font-weight: 400;
-            font-size: 14px;
-            color: #94a3b8;
-            margin-left: 8px;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 14px 20px;
-            font-size: 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 50px;
-            outline: none;
-            background: #f8fafc;
-            margin-bottom: 5px;
-            transition: 0.2s;
-            margin-top: 12px;
-        }
-        .search-box:focus {
-            border-color: #0b1a33;
-            background: #fff;
-        }
-
-        .book {
-            border-bottom: 1px solid #edf2f7;
-        }
-        .book:last-child {
-            border-bottom: none;
-        }
-        .book-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 6px 16px 10px;
-            cursor: pointer;
-            border-radius: 12px;
-            transition: background 0.15s;
-            user-select: none;
-        }
-        .book-header:hover {
-            background: #f6f8fa;
-        }
-        .book-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: #0b1a33;
-        }
-        .book-arrow {
-            font-size: 14px;
-            color: #94a3b8;
-            transition: transform 0.3s ease;
-            margin-left: 12px;
-        }
-        .book-header.open .book-arrow {
-            transform: rotate(180deg);
-        }
-        .book-items {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.35s ease, opacity 0.25s ease;
-            padding-left: 0;
-        }
-        .book-items.open {
-            max-height: 5000px;
-            opacity: 1;
-        }
-
-        .item-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-            padding: 2px 0;
-            margin: 0;
-            padding-left: 2px;
-        }
-        .item-num {
-            font-weight: 400;
-            font-size: 14px;
-            color: #6b7a8f;
-            min-width: 24px;
-            text-align: right;
-            flex-shrink: 0;
-            margin-top: 6px;
-            background: transparent;
-        }
-        .item-text {
-            flex: 1;
-            padding: 6px 0 6px 12px;
-            margin: 2px 0;
-            border-radius: 8px;
-            background: #f8fafc;
-            color: #1e293b;
-            font-size: 15px;
-            line-height: 1.5;
-        }
-        .item-text i {
-            font-style: italic;
-            color: #0b1a33;
-        }
-        .item-text b {
-            font-weight: 700;
-            color: #0b1a33;
-        }
-        .item-text .section-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #0b1a33;
-            display: block;
-            margin: 4px 0 2px 0;
-            padding-left: 4px;
-        }
-        .item-text .book-subhead {
-            font-weight: 600;
-            font-size: 15px;
-            color: #0b1a33;
-            display: block;
-            margin: 4px 0 2px 0;
-            padding-left: 4px;
-            text-decoration: underline;
-        }
-        .highlight {
-            background: rgba(0, 120, 255, 0.25);
-            border-radius: 4px;
-            padding: 0 2px;
-        }
-        .hidden {
-            display: none;
-        }
-
-        .netflix-page {
-            display: none;
-            padding: 10px 0 30px;
-        }
-        .netflix-page.active {
-            display: block;
-        }
-
-        .netflix-back {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: #0b1a33;
-            cursor: pointer;
-            padding: 4px 0;
-            margin-bottom: 10px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
-        .netflix-back:hover {
-            opacity: 0.6;
-        }
-        .netflix-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            color: #0b1a33;
-            margin-bottom: 20px;
-        }
-
-        .netflix-toc {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-bottom: 30px;
-        }
-        .netflix-toc-title {
-            font-weight: 600;
-            font-size: 14px;
-            color: #6b7a8f;
-            margin-bottom: 8px;
-        }
-        .netflix-toc a {
-            display: block;
-            padding: 6px 0;
-            color: #0b1a33;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            border-bottom: 1px solid #edf2f7;
-            transition: opacity 0.2s;
-        }
-        .netflix-toc a:last-child {
-            border-bottom: none;
-        }
-        .netflix-toc a:hover {
-            opacity: 0.6;
-        }
-
-        .netflix-article {
-            margin-bottom: 30px;
-            scroll-margin-top: 20px;
-        }
-        .netflix-article:last-child {
-            margin-bottom: 0;
-        }
-        .netflix-article .num {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 700;
-            color: #0b1a33;
-            margin-bottom: 4px;
-        }
-        .netflix-article .heading {
-            text-align: center;
-            font-size: 20px;
-            font-weight: 700;
-            color: #0b1a33;
-            margin-bottom: 12px;
-        }
-        .netflix-article .text {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #1e293b;
-            white-space: pre-wrap;
-        }
-        .netflix-divider {
-            border: none;
-            border-top: 1px solid #e2e8f0;
-            margin: 30px 0;
-        }
-
-        @media (max-width: 600px) {
-            .app {
-                padding: 20px 16px;
-                border-radius: 16px;
-            }
-            .header-center h1 {
-                font-size: 28px;
-            }
-            .menu-btn {
-                font-size: 24px;
-            }
-            .netflix-title {
-                font-size: 26px;
-            }
-            .netflix-article .heading {
-                font-size: 18px;
-            }
-            .netflix-back {
-                font-size: 18px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
+        .app { max-width: 800px; width: 100%; background: #fff; border-radius: 24px; padding: 30px 28px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); position: relative; overflow: hidden; }
+        .header-row { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 4px; }
+        .menu-btn { position: absolute; left: 0; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 28px; color: #0b1a33; cursor: pointer; padding: 4px 8px; line-height: 1; transition: opacity 0.2s; z-index: 10; }
+        .menu-btn:hover { opacity: 0.6; }
+        .header-center { text-align: center; }
+        .header-center h1 { font-size: 36px; font-weight: 700; color: #0b1a33; letter-spacing: -0.5px; margin: 0; }
+        .header-center .subtitle { font-size: 14px; color: #6b7a8f; margin-top: -2px; }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 999; }
+        .menu-overlay.open { opacity: 1; visibility: visible; }
+        .menu-panel { position: fixed; top: 0; left: 0; width: 80%; max-width: 320px; height: 100%; background: #fff; box-shadow: 2px 0 20px rgba(0,0,0,0.15); transform: translateX(-100%); transition: transform 0.35s ease; z-index: 1000; padding: 30px 24px; overflow-y: auto; }
+        .menu-panel.open { transform: translateX(0); }
+        .menu-close { background: none; border: none; font-size: 30px; color: #0b1a33; cursor: pointer; margin-bottom: 30px; padding: 0; line-height: 1; }
+        .menu-item { font-size: 20px; font-weight: 700; color: #0b1a33; padding: 14px 0; border-bottom: 1px solid #edf2f7; cursor: pointer; transition: opacity 0.2s; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { opacity: 0.6; }
+        .menu-item .sub { font-weight: 400; font-size: 14px; color: #94a3b8; margin-left: 8px; }
+        .search-box { width: 100%; padding: 14px 20px; font-size: 16px; border: 2px solid #e2e8f0; border-radius: 50px; outline: none; background: #f8fafc; margin-bottom: 5px; transition: 0.2s; margin-top: 12px; }
+        .search-box:focus { border-color: #0b1a33; background: #fff; }
+        .book { border-bottom: 1px solid #edf2f7; }
+        .book:last-child { border-bottom: none; }
+        .book-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 6px 16px 10px; cursor: pointer; border-radius: 12px; transition: background 0.15s; user-select: none; }
+        .book-header:hover { background: #f6f8fa; }
+        .book-title { font-weight: 700; font-size: 18px; color: #0b1a33; }
+        .book-arrow { font-size: 14px; color: #94a3b8; transition: transform 0.3s ease; margin-left: 12px; }
+        .book-header.open .book-arrow { transform: rotate(180deg); }
+        .book-items { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.35s ease, opacity 0.25s ease; padding-left: 0; }
+        .book-items.open { max-height: 5000px; opacity: 1; }
+        .item-row { display: flex; align-items: flex-start; gap: 6px; padding: 2px 0; margin: 0; padding-left: 2px; }
+        .item-num { font-weight: 400; font-size: 14px; color: #6b7a8f; min-width: 24px; text-align: right; flex-shrink: 0; margin-top: 6px; background: transparent; }
+        .item-text { flex: 1; padding: 6px 0 6px 12px; margin: 2px 0; border-radius: 8px; background: #f8fafc; color: #1e293b; font-size: 15px; line-height: 1.5; }
+        .item-text i { font-style: italic; color: #0b1a33; }
+        .item-text b { font-weight: 700; color: #0b1a33; }
+        .item-text .section-title { font-weight: 700; font-size: 15px; color: #0b1a33; display: block; margin: 4px 0 2px 0; padding-left: 4px; }
+        .item-text .book-subhead { font-weight: 600; font-size: 15px; color: #0b1a33; display: block; margin: 4px 0 2px 0; padding-left: 4px; text-decoration: underline; }
+        .highlight { background: rgba(0,120,255,0.25); border-radius: 4px; padding: 0 2px; }
+        .hidden { display: none; }
+        
+        /* ===== СТРАНИЦА NETFLIX+ (ШАПКА УБРАНА НАВСЕГДА) ===== */
+        .netflix-page { display: none; padding: 10px 0 30px; }
+        .netflix-page.active { display: block; }
+        /* УБИРАЕМ ШАПКУ ФИЗИЧЕСКИ */
+        .netflix-page .header-row { display: none !important; }
+        
+        .netflix-back { background: none; border: none; font-size: 20px; color: #0b1a33; cursor: pointer; padding: 4px 0; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        .netflix-back:hover { opacity: 0.6; }
+        .netflix-title { text-align: center; font-size: 32px; font-weight: 700; color: #0b1a33; margin-bottom: 20px; }
+        .netflix-toc { background: #f8fafc; border-radius: 16px; padding: 16px 20px; margin-bottom: 30px; }
+        .netflix-toc-title { font-weight: 600; font-size: 14px; color: #6b7a8f; margin-bottom: 8px; }
+        .netflix-toc a { display: block; padding: 6px 0; color: #0b1a33; text-decoration: none; font-weight: 500; font-size: 15px; border-bottom: 1px solid #edf2f7; transition: opacity 0.2s; }
+        .netflix-toc a:last-child { border-bottom: none; }
+        .netflix-toc a:hover { opacity: 0.6; }
+        .netflix-article { margin-bottom: 30px; scroll-margin-top: 20px; }
+        .netflix-article:last-child { margin-bottom: 0; }
+        .netflix-article .num { text-align: center; font-size: 18px; font-weight: 700; color: #0b1a33; margin-bottom: 4px; }
+        .netflix-article .heading { text-align: center; font-size: 20px; font-weight: 700; color: #0b1a33; margin-bottom: 12px; }
+        .netflix-article .text { font-size: 15px; line-height: 1.6; color: #1e293b; white-space: pre-wrap; }
+        .netflix-divider { border: none; border-top: 1px solid #e2e8f0; margin: 30px 0; }
+        @media (max-width: 600px) { .app { padding: 20px 16px; border-radius: 16px; } .header-center h1 { font-size: 28px; } .menu-btn { font-size: 24px; } .netflix-title { font-size: 26px; } .netflix-article .heading { font-size: 18px; } .netflix-back { font-size: 18px; } }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- ШАПКА -->
+        <!-- ===== ШАПКА (только на главной) ===== -->
         <div class="header-row" id="mainHeader">
             <button class="menu-btn" id="menuToggle" aria-label="Меню">☰</button>
             <div class="header-center">
@@ -387,13 +78,13 @@
             </div>
         </div>
 
-        <!-- ГЛАВНАЯ СТРАНИЦА -->
+        <!-- ===== ГЛАВНАЯ ===== -->
         <div id="mainPage">
             <input type="text" class="search-box" id="searchInput" placeholder="Поиск по названию или содержанию..." />
             <div id="bookContainer"></div>
         </div>
 
-        <!-- СТРАНИЦА NETFLIX+ -->
+        <!-- ===== NETFLIX+ (шапка УБРАНА через CSS) ===== -->
         <div class="netflix-page" id="netflixPage">
             <button class="netflix-back" id="netflixBack">← Назад</button>
             <div class="netflix-title">Netflix+</div>
@@ -404,7 +95,7 @@
         </div>
     </div>
 
-    <!-- МЕНЮ -->
+    <!-- ===== МЕНЮ ===== -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="menu-panel" id="menuPanel">
         <button class="menu-close" id="menuClose">✕</button>
@@ -414,19 +105,16 @@
     </div>
 
     <script>
-        // ===== ДАННЫЕ КНИГ (полные, все 12 книг) =====
-        const library = [{
-            title: "ДЖЕФФРИ МУР",
-            items: [
+        // ===== ДАННЫЕ КНИГ =====
+        const library = [
+            { title: "ДЖЕФФРИ МУР", items: [
                 "<b>4 зоны</b><br>• <b>Зона производительности</b> – действующий бизнес, который приносит > 90% выручки и прибыли. Главная задача: выполнять текущие планы продаж и защищать долю рынка.<br>• <b>Зона продуктивности.</b> Задача: повышать прибыль первой зоны.<br>• <b>Зона инкубации.</b> «Стартапы» внутри компании. Задача: разрабатывать прорывные продукты и проверять их на рынке, финансируя как венчурные проекты.<br>• <b>Зона трансформации.</b> Сюда выходит один успешный проект из инкубации, чтобы его быстро масштабировать в новое направление бизнеса.",
                 "<b>Матрица производительности.</b> Продукты/услуги генерирующие минимум 10% общей выручки компании. Есть свои ответственные за каждую ячейку матрицы. Позволяет ставить грамотнее распределять лучших руководителей и фокусировать внимание.",
                 "<b>Программа по завершению жизненного цикла продуктов.</b> Если не закрывать продукты не приносящий достаточной прибыли и не имеющих перспективы - это лишает компанию гибкости (мы тянем старые проекты за собой как груз). Закрытие помогает сосредоточиться на реальных проектах приносящих прибыль. Необходимо отменить бонусы за производительность данного продукта, сменить ответственных этой ячейки в матрице на других, составить график прекращения максимально нивелирующий последствия, правильно аккумулировать остаточные поступления от продукта.",
                 "<b>Внутри торнадо.</b> 1. Важность понимания на каком этапе мы находимся, от этого зависит что нам делать с продуктом, маркетингом и клиентами. 2. Сверхконкуренстность. Аналогия с боями рыцарей за руку дамы. Нам нужно фокусироваться не на нашем конкуренте, а на потребителе.",
                 "<b>Высокоэффективный менеджмент.</b> 1. Выход продукции любого менеджера представляет собой произведенную продукцию организационной единицы, находящейся под его руководством<br>2. Добавляете ли вы реальную стоимость? Каким образом?<br><i>Вовлеченность</i> (компания и отрасль в целом).<br><i>Нововведения</i> (внедряете или ждете и только рассказываете о них)<br>3. Конструировать свой производственный поток, начиная с самого 'сложного' процесса<br>4. Решать проблему на как можно более низкой ступени прибавления стоимости<br>5. Базовая таблица отклонений<br><i>6. Чем более своевременна информация, тем большую она имеет ценность</i>"
-            ]
-        }, {
-            title: "NETFLIX",
-            items: [
+            ] },
+            { title: "NETFLIX", items: [
                 "<span style='text-decoration: underline; font-weight: 400;'>Всегда действуйте в интересах компании</span>",
                 "Почему люди молчат? Страх что вас не поддержат, что за вами закрепится плохая репутация, неприязнь тяжелых разговоров, вас посчитают выскочкой. Но в нашей корпоративной культуре, <i>промолчать - значит подвести себя и всю команду</i>",
                 "С древних времён люди стремились быть частью группы, поэтому когда нас критикую, срабатывает первобытный инстинкт, ощущение, что нас отвергнут. Именно поэтому нам так тяжело воспринимать критику",
@@ -451,204 +139,123 @@
                 "Надо принимать решение по ситуации, а не по инструкции",
                 "Талантливые сотрудники не должны чувствовать что не могут принять верных решений, не нарушив нелепые правила. (пример с арендой машины и взятием такси, сначала 2 часа а потом 15 минут)",
                 "Контекст > Контроля (у нас не пирамида, а дерево)"
-            ]
-        }, {
-            title: "ПАТТИ МАККОРД",
-            items: [
-                "Нанимайте только сильных людей",
-                "Мотивируют не бонусы, а интересные задачи",
-                "Радикальная честность",
-                "Не управляйте взрослыми как детьми",
-                "Контекст важнее контроля (куда мы идем)",
-                "Компания постоянно меняется (актуальность в будущем, например сотрудника)",
-                "Люди важнее процессов",
-                "Свобода и ответственность",
-                "Высокая плотность талантов",
-                "Высокие стандарты",
-                "Если этот сотрудник завтра скажет я ухожу, будем ли мы за него бороться?",
-                "Pay top of market. Человек должен думать о работе, а не по повышении каждые полгода",
+            ] },
+            { title: "ПАТТИ МАККОРД", items: [
+                "Нанимайте только сильных людей", "Мотивируют не бонусы, а интересные задачи", "Радикальная честность", "Не управляйте взрослыми как детьми",
+                "Контекст важнее контроля (куда мы идем)", "Компания постоянно меняется (актуальность в будущем, например сотрудника)", "Люди важнее процессов",
+                "Свобода и ответственность", "Высокая плотность талантов", "Высокие стандарты",
+                "Если этот сотрудник завтра скажет я ухожу, будем ли мы за него бороться?", "Pay top of market. Человек должен думать о работе, а не по повышении каждые полгода",
                 "Сильная команда важнее одной суперзвезды"
-            ]
-        }, {
-            title: "РЭЙ ДАЛИО",
-            items: [
-                "Меритократия идей",
-                "Радикальная честность",
-                "Прозрачность (открыты все решения, их причины и тд)",
+            ] },
+            { title: "РЭЙ ДАЛИО", items: [
+                "Меритократия идей", "Радикальная честность", "Прозрачность (открыты все решения, их причины и тд)",
                 "Ошибки - ключ к нашему успеху. Ошибаться не должно быть стыдно. Стыдно должно быть не делать правильные выводы и скрывать свои ошибки",
-                "Цель, проблемы, анализ причины, план, исполнение. Многие зачастую перескакивают сразу к действию",
-                "Поиск первопричины. Почему? Почему? Почему?",
-                "Человек - набор привычек. Зная сотрудника/коллегу можно предсказать его возможные действия",
-                "Не нанимать универсального героя. Нужно понимать какие нужны качества и под них искать людей",
-                "Характер > навыки. Навыки можно приобрести, а характер изменить сложнее",
-                "Right person, right seat. Даже хороший человек может работать плохо, если это не его роль",
-                "Нельзя снижать требования ради человека. Как правило касается высшего руководства или любимых сотрудников",
-                "Карточки сотрудников. Сильные, слабые стороны. Особенности",
-                "Dot Collector. Система оценивания: аналитика, логика, открытость, лидерство. Со временем видно в чем силен человек",
-                "Журнал проблем. Открытость. Каждая проблема имеет владельца, статус, причину, решение",
-                "Оценивать не событие, а закономерность. Про ошибки, он ошибся один раз или он ошибается и ничего не делает уже шестой раз",
-                "Высокие стандарты обратной связи. Опять же открытость"
-            ]
-        }, {
-            title: "ДЖИМ КОЛЛИНЗ",
-            items: [
-                "Лидер пятого уровня",
-                "Window and mirror. Если успех - заслуга команды. Провал - ошибка руководителя.",
+                "Цель, проблемы, анализ причины, план, исполнение. Многие зачастую перескакивают сразу к действию", "Поиск первопричины. Почему? Почему? Почему?",
+                "Человек - набор привычек. Зная сотрудника/коллегу можно предсказать его возможные действия", "Не нанимать универсального героя. Нужно понимать какие нужны качества и под них искать людей",
+                "Характер > навыки. Навыки можно приобрести, а характер изменить сложнее", "Right person, right seat. Даже хороший человек может работать плохо, если это не его роль",
+                "Нельзя снижать требования ради человека. Как правило касается высшего руководства или любимых сотрудников", "Карточки сотрудников. Сильные, слабые стороны. Особенности",
+                "Dot Collector. Система оценивания: аналитика, логика, открытость, лидерство. Со временем видно в чем силен человек", "Журнал проблем. Открытость. Каждая проблема имеет владельца, статус, причину, решение",
+                "Оценивать не событие, а закономерность. Про ошибки, он ошибся один раз или он ошибается и ничего не делает уже шестой раз", "Высокие стандарты обратной связи. Опять же открытость"
+            ] },
+            { title: "ДЖИМ КОЛЛИНЗ", items: [
+                "Лидер пятого уровня", "Window and mirror. Если успех - заслуга команды. Провал - ошибка руководителя.",
                 "КТО, а не что. Если мы набираем людей на борт корабля, имея один курс, то по пути курс может измениться. Так вот, не прыгнут ли за борт те кого мы набрали. Главное люди, а маршрут всегда корректируется.",
                 "Реализм + вера. Мы обязательно победим. Сейчас ситуация тяжелая.",
                 "Концепция ежа, пересечение трех вопросов. Что мы можем делать лучше всех в мире? Что нас экономически двигает? Что нас действительно вдохновляет?",
-                "Маховик. Сначала толкать тяжело, а потом все легче и легче.",
-                "Не контроль, а дисциплина.",
-                "Технологии как акселератор.",
+                "Маховик. Сначала толкать тяжело, а потом все легче и легче.", "Не контроль, а дисциплина.", "Технологии как акселератор.",
                 "ИДЕОЛОГИЯ. Core ideology. Миссия, ценности, философия. Тот фундамент и та основная шестеренка, вокруг которой будут выстраиваться все бизнес процессы. То что мы никогда не изменим. Мир, подходы, стратегия, цели, продукты - это все будет изменяться сотни раз, но наша идеология никогда. Пример Procter&Gamble.",
-                "Не пытаться заранее придумать идеальный план, а экспериментировать и оставлять то, что реально работает.",
-                "Home-grown Management.",
+                "Не пытаться заранее придумать идеальный план, а экспериментировать и оставлять то, что реально работает.", "Home-grown Management.",
                 "Упадок компаний как болезнь, которую трудно выявить, но легче вылечить на ранних стадия. И легче выявить, но труднее вылечить на поздних.",
                 "Стадии упадка:<br>• Высокомерие, порожденное успехом<br>• Неконтролируемое стремление к большему<br>• Отрицание риска и опасности<br>• Попытки спастись<br>• Капитуляция перед кризисом или гибелью"
-            ]
-        }, {
-            title: "МАЙКЛ ПОРТЕР",
-            items: [
-                "Анализ макро среды бизнеса, своей отрасли, сегмента рынка. (ромбом портера например)",
-                "Отрасль задает верхнюю границу прибыльности.",
-                "Лучшие в издержках или в дифференциации.",
-                "Focus strategy. Бороться не за весь рынок, а за определенную нишу",
+            ] },
+            { title: "МАЙКЛ ПОРТЕР", items: [
+                "Анализ макро среды бизнеса, своей отрасли, сегмента рынка. (ромбом портера например)", "Отрасль задает верхнюю границу прибыльности.",
+                "Лучшие в издержках или в дифференциации.", "Focus strategy. Бороться не за весь рынок, а за определенную нишу",
                 "Часто компании пытаются преуспеть везде, но это невозможно. Лучше быть лучшими в одном, чем быть средними во всем.",
                 "Цепочка создания ценности. Закупка-Производство-Логистика-Маркетинг-Продажи-Сервис. Нужно анализировать каждое звено: где создается ценность? где теряются деньги? что можно улучшить? что можно автоматизировать? что можно передать на аутсорсинг?",
                 "Стратегия - это не выбор того, что делать. Стратегия - это выбор того, что НЕ делать.",
-                "Преимущество должно быть трудно копируемым.",
-                "PESTEL, Political Economic Social Tech Environmental Legal",
-                "5 сил Портера"
-            ]
-        }, {
-            title: "СБОРНИК",
-            items: [
+                "Преимущество должно быть трудно копируемым.", "PESTEL, Political Economic Social Tech Environmental Legal", "5 сил Портера"
+            ] },
+            { title: "СБОРНИК", items: [
                 "BCG Matrix. Звезды - большая доля рынка, быстро растут. Дойные коровы - большая доля рынка, не растут. Трудные дети - маленькая доля рынка, но вроде растут. Собаки - не растут и нет доли рынка. Помогает управлять портфелем своих продуктов",
-                "Blue ocean strategy. Не конкурировать, а создавать новый рынок",
-                "7P. Product, Price, Place, People, Promotion, Process, Physical evidence",
-                "Бенчмаркинг",
-                "<i>Латеральный маркетинг</i>",
-                "Как одна привычка может изменить компанию. Пол Онил в Alcoa"
-            ]
-        }, {
-            title: "ПОЗИЦИОНИРОВАНИЕ",
-            items: [
+                "Blue ocean strategy. Не конкурировать, а создавать новый рынок", "7P. Product, Price, Place, People, Promotion, Process, Physical evidence",
+                "Бенчмаркинг", "<i>Латеральный маркетинг</i>", "Как одна привычка может изменить компанию. Пол Онил в Alcoa"
+            ] },
+            { title: "ПОЗИЦИОНИРОВАНИЕ", items: [
                 "Позиционирование - это решение, которое вы принимаете до того, как начинаете заниматься маркетингом",
                 "Если вы не можете быть первым в категории, тогда создайте себе новую категорию и станьте первым в ней (Амелия Эрхарт)",
-                "Лучший заголовок для рекламы - незаконченный",
-                "Не надо рекламировать мечты своих менеджеров",
-                "Продукт производится на предприятии. А марка производится в сознании",
-                "Если это похоже на утку и ходит как утка, люди и будут считать что это утка",
-                "Колба с окисью водорода - нет. Стакан чистой воды - с удовольствием",
-                "Важность названия марки в сознании потребителя. Цветной - негр - черный - афроамериканец",
+                "Лучший заголовок для рекламы - незаконченный", "Не надо рекламировать мечты своих менеджеров",
+                "Продукт производится на предприятии. А марка производится в сознании", "Если это похоже на утку и ходит как утка, люди и будут считать что это утка",
+                "Колба с окисью водорода - нет. Стакан чистой воды - с удовольствием", "Важность названия марки в сознании потребителя. Цветной - негр - черный - афроамериканец",
                 "Heinz - это компания с мировым именем, но в продаже огурчиков уступает Vlasie",
                 "Нужно придумать хороший слоган? Нет. Позиционирование - это контекст в котором человек понимает ваш продукт. На какой полочке в его голове находится этот товар",
                 "Хороший продукт часто не продается, клиенты думают \"интересно..\", но не берут. Они просто не понимают когда и где именно использовать продукт",
                 "Наш продукт лучше, выгоднее, быстрее, но клиенты ответят: \"ну и что?\". Пока человек не понимает почему именно это для него важно, любые характеристики бесполезны",
-                "Лучшие клиенты помогают найти позиционирование",
-                "Какие уникальные возможности есть у продукта? Какие преимущества это создает? Кому это действительно важно? Какие альтернативы используют эти люди? В какой категории вас должны воспринимать? Почему именно мы лучший представитель этой категории?",
+                "Лучшие клиенты помогают найти позиционирование", "Какие уникальные возможности есть у продукта? Какие преимущества это создает? Кому это действительно важно? Какие альтернативы используют эти люди? В какой категории вас должны воспринимать? Почему именно мы лучший представитель этой категории?",
                 "Мы продаем не продукт, мы помогаем человеку стать тем, кем он хочет. Покупая новые кроссовки найк, новый айфон, ролексы, мы ощущаем себя по другому. Кем станет наш клиент после покупки?",
-                "Мы не для всех, наш продукт не для всех. И это нормально, это правильно",
-                "Что в нашем продукте заставит людей рассказывать о нем? Какое именно качество, функция, свойство?"
-            ]
-        }, {
-            title: "THINKING",
-            items: [
-                "<span class='section-title'>Think clearly</span>",
-                "Хорошее решение - это не то, которое привело к хорошему результату, а то которое принято на основе качественного мышления",
-                "Интуиция - это не магия. А огромная библиотека прошлого опыта",
-                "Наш мозг создан не для поиск истины, а для быстрого выживания.",
-                "Не путать хороший результат с хорошим решением",
-                "Сильный мыслитель - не тот кто всегда прав, а тот кто быстрее замечает собственные ошибки и способен их исправить",
-                "Нельзя позволять эмоциям становиться главным советчиком",
-                "Миром управляют вероятности, а не гарантии. Нужно это принимать",
+                "Мы не для всех, наш продукт не для всех. И это нормально, это правильно", "Что в нашем продукте заставит людей рассказывать о нем? Какое именно качество, функция, свойство?"
+            ] },
+            { title: "THINKING", items: [
+                "<span class='section-title'>Think clearly</span>", "Хорошее решение - это не то, которое привело к хорошему результату, а то которое принято на основе качественного мышления",
+                "Интуиция - это не магия. А огромная библиотека прошлого опыта", "Наш мозг создан не для поиск истины, а для быстрого выживания.",
+                "Не путать хороший результат с хорошим решением", "Сильный мыслитель - не тот кто всегда прав, а тот кто быстрее замечает собственные ошибки и способен их исправить",
+                "Нельзя позволять эмоциям становиться главным советчиком", "Миром управляют вероятности, а не гарантии. Нужно это принимать",
                 "Ментальная гибкость. Гибкость - это способность пересматривать планы без ощущения, что весь мир рухнул. Сухая ветка дерева ломается во время ветра, а гибкая нет.",
-                "Три исхода: Оптимистичный-Базовый-Пессимистичный. Что мы будем делать если продажи будут плохими?",
-                "Правило обратного мышления. Что почти наверняка приведет к провалу?",
-                "<span class='section-title'>Think fast and slow</span>",
-                "Заставлять работать Систему мышления 2 (концентрация и энергия)",
-                "Мозг не любит пустоты, если информации недостаточно, он автоматически ее достраивает",
-                "Ассоциативные эффекты",
+                "Три исхода: Оптимистичный-Базовый-Пессимистичный. Что мы будем делать если продажи будут плохими?", "Правило обратного мышления. Что почти наверняка приведет к провалу?",
+                "<span class='section-title'>Think fast and slow</span>", "Заставлять работать Систему мышления 2 (концентрация и энергия)",
+                "Мозг не любит пустоты, если информации недостаточно, он автоматически ее достраивает", "Ассоциативные эффекты",
                 "Ощущение легкости не означает, что информация верна. Это чувство часто принимают за доказательство истинности",
                 "...спокойная, тихая, любит порядок\" кто она, библиотекарь или продавец? Никто не учитывает что продавцов намного больше чем библиотекарей"
-            ]
-        }, {
-            title: "ТОМ ВУДЖЕК",
-            items: [
+            ] },
+            { title: "ТОМ ВУДЖЕК", items: [
                 "Уровни подготовленности ума: сила, гибкость, выносливость, координация",
-                "Отвлекающие факторы: мысли о прошлом, текущие, мысли о будущем, + мысли о потребностях",
-                "Приложение то, с фокусировкой внимания"
-            ]
-        }, {
-            title: "МЕНЕДЖМЕНТ",
-            items: [
-                "Планирование, организация, мотивация, контроль",
-                "Этапы планирования: постановка целей и задач, составление программы действий, выявление необходимых ресурсов и их источников, доведение планов до их исполнителей",
-                "Цель - Миссия(клиенты, принципы, польза) - Видение",
-                "Контроль - предварительный, текущий, заключительный",
+                "Отвлекающие факторы: мысли о прошлом, текущие, мысли о будущем, + мысли о потребностях", "Приложение то, с фокусировкой внимания"
+            ] },
+            { title: "МЕНЕДЖМЕНТ", items: [
+                "Планирование, организация, мотивация, контроль", "Этапы планирования: постановка целей и задач, составление программы действий, выявление необходимых ресурсов и их источников, доведение планов до их исполнителей",
+                "Цель - Миссия(клиенты, принципы, польза) - Видение", "Контроль - предварительный, текущий, заключительный",
                 "Анализ ситуации, идентификация проблемы, определение критериев выбора, разработка альтернатив, выбор наилучшей альтернативы, согласование решения, управление реализацией, контроль и оценка результатов"
-            ]
-        }, {
-            title: "ГЬЯНА",
-            items: [
-                "Думать не как менеджер, а как владелец",
-                "Подобное притягивает подобное",
-                "Не \"за что?\" а \"для чего\" \"ради чего\"",
-                "Успех — это способность идти от поражения к поражению, не теряя энтузиазма",
-                "Слабость системной архитектуры всегда пытаются компенсировать интенсивностью шума.",
-                "Если кто-то должен разрушить наш бизнес, пусть это будем мы. American Express",
-                "Не люди создают систему, а система отбирает людей. Не пытайся сразу найти идеальное решение. Построй систему, которая позволяет быстро отбрасывать плохие решения",
+            ] },
+            { title: "ГЬЯНА", items: [
+                "Думать не как менеджер, а как владелец", "Подобное притягивает подобное", "Не \"за что?\" а \"для чего\" \"ради чего\"",
+                "Успех — это способность идти от поражения к поражению, не теряя энтузиазма", "Слабость системной архитектуры всегда пытаются компенсировать интенсивностью шума.",
+                "Если кто-то должен разрушить наш бизнес, пусть это будем мы. American Express", "Не люди создают систему, а система отбирает людей. Не пытайся сразу найти идеальное решение. Построй систему, которая позволяет быстро отбрасывать плохие решения",
                 "Стимулы важнее намерений. Если система вознаграждений устроена плохо, хорошие люди тоже начнут принимать плохие решения. Пример где два умных человека, но только одному принадлежит компания, а другой просто в ней работает",
                 "Стимулы сильнее инструкций. Менеджер должен сначала спрашивать: что человеку выгодно? А уже потом - что ему сказали делать?",
-                "Фирма экономит издержки координации. Именно поэтому существуют компании",
-                "Контроль - это единственный способ узнать вклад участников",
+                "Фирма экономит издержки координации. Именно поэтому существуют компании", "Контроль - это единственный способ узнать вклад участников",
                 "CEO - главный распределитель капитала. Он думает куда вложить каждый доллар компании, чтобы через 10 лет он стоил максимально дорого",
                 "Не всегда нужно улучшать продукт. Иногда нужно улучшить ощущение от продукта. Пример с быстрым комфортным поездом и поездом у которого есть wi-fi.",
                 "Не всегда инженерные решения лучше психологических. Если длинная очередь, все хотят поставить новую кассу, а можно просто поставить телевизор, зеркало.",
                 "Хорошая реклама не убеждает. Redbull. Ни слова про вкус, только эмоции.",
                 "Формулировка проблемы. Долго ожидание автобусов? Все начинают считать маршрут и их количество. Но что если проблема не в ожидании, а в скуке. (телеэкраны, интернет, комфортные скамейки)",
-                "Цена также создает ценность. И иногда ее снижение может быть негативным сигналом",
-                "Смотреть сквозь сырые данные и то что можно легко измерить. Цифры и показатели в Excel не скажут нам об удовлетворенности, чувстве безопасности и доверии наших клиентов",
+                "Цена также создает ценность. И иногда ее снижение может быть негативным сигналом", "Смотреть сквозь сырые данные и то что можно легко измерить. Цифры и показатели в Excel не скажут нам об удовлетворенности, чувстве безопасности и доверии наших клиентов",
                 "Маленькие изменения - огромный эффект. Даже обычный шрифт в объявлении о вакансии может изменить все",
-                "Самые большие угрозы приходят не когда компания в кризисе, а наоборот, когда все процветает",
-                "То что привело вас к успеху вчера, может стать причиной поражения завтра. Intel и японский бизнес памяти",
-                "Нельзя решить стратегическую проблему операционным совершенствованием",
-                "Если сотрудники бояться говорить правду - компания начинает жить в иллюзии. В хороших компаниях обязаны спорить",
-                "\"Яблочный\" маркетинг - это когда вы рисуете мишель вокруг места в которое попали",
-                "Сначала нужно найти узкий круг людей и стать для них незаменимыми, не нужно сразу выезжать на большую трассу полную быстрых машин. Начинать нужно с малого",
+                "Самые большие угрозы приходят не когда компания в кризисе, а наоборот, когда все процветает", "То что привело вас к успеху вчера, может стать причиной поражения завтра. Intel и японский бизнес памяти",
+                "Нельзя решить стратегическую проблему операционным совершенствованием", "Если сотрудники бояться говорить правду - компания начинает жить в иллюзии. В хороших компаниях обязаны спорить",
+                "\"Яблочный\" маркетинг - это когда вы рисуете мишель вокруг места в которое попали", "Сначала нужно найти узкий круг людей и стать для них незаменимыми, не нужно сразу выезжать на большую трассу полную быстрых машин. Начинать нужно с малого",
                 "Самые важные встречи руководителя - это не совещания. Это личные разговоры с сотрудниками 1на1, причем больше должен говорить сотрудник. И не о проверке статуса задач, а о том что ему мешает, куда бы он хотел расти, что бы он улучшил?",
-                "В гугл руководители большую часть времени тратили не на контроль задач, а на развитие людей",
-                "Репутация дороже денег. Ее можно приобретать десятки лет и потерять в считанные дни",
+                "В гугл руководители большую часть времени тратили не на контроль задач, а на развитие людей", "Репутация дороже денег. Ее можно приобретать десятки лет и потерять в считанные дни",
                 "Не нужно пытаться дать правильные ответы, нужно сосредоточиться на постановке правильных вопросов, что в руководстве, что в образовании (80% образование заключается в самообразовании)",
-                "Нужно заботиться о стоимости для акционеров, а не о цене для спекулянтов",
-                "Большой не означает великий, а великий - не обязательно большой",
+                "Нужно заботиться о стоимости для акционеров, а не о цене для спекулянтов", "Большой не означает великий, а великий - не обязательно большой",
                 "Закон Паккарда. Великая компания погибнет скорее из за неспособности переварить слишком много возможностей, чем из за истощения в результате их отсутствия",
-                "Какие позиции являются ключевыми? Все ли они заняты правильными людьми?",
-                "Одни считают что \"имеют работу\", а другие \"принимают ответственность\"",
+                "Какие позиции являются ключевыми? Все ли они заняты правильными людьми?", "Одни считают что \"имеют работу\", а другие \"принимают ответственность\"",
                 "На вопрос что вы делаете, кто то называет свою должность, а кто то говорит за что он ответственен",
                 "<i>Когда для выдачи кредита решение проходит через 10 комитетов и собирает 15 подписей, то кредитный менеджер скажет что это не моя вина. Виновата становится система. А за системой прячется сотня плохих сотрудников</i>",
-                "Нельзя спасать сегодняшний день ценой уничтожения завтрашнего",
-                "Менеджмент служит работникам, а не наоборот",
-                "Управление риском - это не способ заработать больше, это способ остаться живым",
-                "Плохие люди испортят любую хорошую стратегию, а хорошие люди спасут любую плохую",
+                "Нельзя спасать сегодняшний день ценой уничтожения завтрашнего", "Менеджмент служит работникам, а не наоборот",
+                "Управление риском - это не способ заработать больше, это способ остаться живым", "Плохие люди испортят любую хорошую стратегию, а хорошие люди спасут любую плохую",
                 "Что важнее при выдаче кредита? Характер - ответил Джон Морган. Честный человек будет искать способы вернуть деньги. Нечестный не вернет даже при идеальных раскладах"
-            ]
-        }, {
-            title: "ПРИЛОЖЕНИЯ",
-            items: [
+            ] },
+            { title: "ПРИЛОЖЕНИЯ", items: [
                 "<b>Внутри Торнадо.</b><br>• <b>Ранний рынок</b> - новаторы и визионеры покупают идею, а не конечный продукт. <i>(экономический покупатель)</i><br>• <b>Пропасть</b> - почему обычный прагматичный клиент должен купить это сейчас? Нам нужно выбрать один четкий сегмент и поставить на него конечный, полноценный продукт<br>• <b>Торнадо</b> - спроса больше чем предложения. Бери долю рынка сейчас, оптимизацию сделаешь потом<br>• <b>Мейн стрит</b> - сегментировать рынок, дифференциация, маркетинг '+1'. <i>(конечный пользователь)</i>"
-            ]
-        }];
+            ] }
+        ];
 
         // ===== РЕНДЕР КНИГ =====
         const container = document.getElementById('bookContainer');
         const searchInput = document.getElementById('searchInput');
         let timeoutId = null;
 
-        function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        }
-
+        function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
         function highlightText(text, term) {
             if (!term) return text;
             const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
@@ -658,7 +265,6 @@
         function renderBooks(filterText = '') {
             const lowerFilter = filterText.toLowerCase().trim();
             container.innerHTML = '';
-
             document.querySelectorAll('.book-items').forEach(el => el.classList.remove('open'));
             document.querySelectorAll('.book-header').forEach(el => el.classList.remove('open'));
 
@@ -669,9 +275,7 @@
 
                 const bookDiv = document.createElement('div');
                 bookDiv.className = 'book';
-                if (!match && lowerFilter !== '') {
-                    bookDiv.classList.add('hidden');
-                }
+                if (!match && lowerFilter !== '') bookDiv.classList.add('hidden');
 
                 const header = document.createElement('div');
                 header.className = 'book-header';
@@ -686,18 +290,13 @@
 
                 const itemsDiv = document.createElement('div');
                 itemsDiv.className = 'book-items';
-
-                let clearIdx = 0;
-                let fastIdx = 0;
-                let isFast = false;
+                let clearIdx = 0, fastIdx = 0, isFast = false;
 
                 book.items.forEach((text) => {
                     const row = document.createElement('div');
                     row.className = 'item-row';
-
                     const numSpan = document.createElement('span');
                     numSpan.className = 'item-num';
-
                     const isSection = text.includes('section-title');
                     const isSubhead = text.includes('book-subhead');
                     if (isSection || isSubhead) {
@@ -712,23 +311,13 @@
                         }
                         numSpan.textContent = '';
                     } else {
-                        if (isFast) {
-                            fastIdx++;
-                            numSpan.textContent = fastIdx + '.';
-                        } else {
-                            clearIdx++;
-                            numSpan.textContent = clearIdx + '.';
-                        }
+                        if (isFast) { fastIdx++; numSpan.textContent = fastIdx + '.'; }
+                        else { clearIdx++; numSpan.textContent = clearIdx + '.'; }
                     }
-
                     const textSpan = document.createElement('span');
                     textSpan.className = 'item-text';
-                    if (lowerFilter && (titleMatch || itemsMatch)) {
-                        textSpan.innerHTML = highlightText(text, filterText);
-                    } else {
-                        textSpan.innerHTML = text;
-                    }
-
+                    if (lowerFilter && (titleMatch || itemsMatch)) textSpan.innerHTML = highlightText(text, filterText);
+                    else textSpan.innerHTML = text;
                     row.appendChild(numSpan);
                     row.appendChild(textSpan);
                     itemsDiv.appendChild(row);
@@ -736,29 +325,15 @@
 
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
-
-                    document.querySelectorAll('.book-items').forEach(el => {
-                        if (el !== itemsDiv) {
-                            el.classList.remove('open');
-                        }
-                    });
-                    document.querySelectorAll('.book-header').forEach(el => {
-                        if (el !== header) {
-                            el.classList.remove('open');
-                        }
-                    });
-
+                    document.querySelectorAll('.book-items').forEach(el => { if (el !== itemsDiv) el.classList.remove('open'); });
+                    document.querySelectorAll('.book-header').forEach(el => { if (el !== header) el.classList.remove('open'); });
                     if (!isOpen) {
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
-
                         setTimeout(() => {
                             const rect = bookDiv.getBoundingClientRect();
                             const offset = 30;
-                            window.scrollTo({
-                                top: window.scrollY + rect.top - offset,
-                                behavior: 'smooth'
-                            });
+                            window.scrollTo({ top: window.scrollY + rect.top - offset, behavior: 'smooth' });
                         }, 400);
                     } else {
                         itemsDiv.classList.remove('open');
@@ -776,41 +351,21 @@
             clearTimeout(timeoutId);
             timeoutId = setTimeout(() => renderBooks(e.target.value), 150);
         });
-
         renderBooks();
 
-        // ===== ДАННЫЕ NETFLIX+ =====
-        const netflixArticles = [{
-            title: "РУКОВОДСТВО ТОЖЕ НУЖДАЕТСЯ В КРИТИКЕ",
-            text: `Все помнят сказку «Новое платье короля» — про глупого монарха, которого убедили, что он одет в роскошнейший наряд, тогда как в действительности он расхаживал перед подданными в чем мать родила. Никто не посмел сказать ему об этом, кроме ребенка, ничего не знавшего о власти, субординации и последствиях ее нарушения.\n\nЧем выше должность, тем реже человек слышит критику в свой адрес и тем выше вероятность, что однажды, фигурально выражаясь, он придет на работу голым — то есть совершит ошибку, которая станет очевидна всем, кроме него.`
-        }, {
-            title: "ПРАВИЛЬНАЯ КРИТИКА / ОТКРЫТОСТЬ",
-            text: `Спустя неделю ко мне неожиданно подошел его непосредственный начальник. Он был в курсе нашего конфликта и сказал, что формально я, в общем-то, прав, но знаю ли я, что после моей выволочки тот инженер совершенно утратил интерес к работе? Может быть, я хочу подорвать работоспособность всего отдела? Нет, этого я, разумеется, не хотел. Коллега продолжил.\n\n- Как вы думаете, вы сумели бы высказать все то же самое в такой форме, чтобы человек поверил в свои силы и захотел сам исправить ошибки?\n- Ну да, — ответил я. - Наверное, сумел бы.\n- Хорошо. Пожалуйста, в дальнейшем постарайтесь поступать именно так.\n\nИ я стал стараться.\nВся эта беседа заняла не более двух минут и возымела мгновенное действие. Заметьте, коллега не стал называть меня хамом или плохим руководителем. Он просто задал два вопроса: «Хотите ли вы навредить компании?» и «Можете ли вы вести себя по-человечески?» Разумеется, на каждый из них возможен лишь один ответ. Если бы он просто сказал «Вы хам», я бы, наверное, ответил: «Ничего подобного». Но он высказал претензии в вопросительной форме, и мне волей-неволей пришлось задуматься и немного покопаться в себе.`
-        }, {
-            title: "ГРАФИК ОТПУСКОВ",
-            text: `Мы все иногда удаленно работаем по выходным, отвечаем на письма и сообщения в любое время суток, берем полдня отгула по семейным обстоятельствам. При этом никто не ведет учет отработанных часов. Почему же тогда мы считаем количество свободных дней?\n\nВ 2003 году, на той самой встрече, где мы договорились о свободном порядке предоставления отпусков, она настаивала: чтобы эксперимент увенчался успехом, нам, руководителям, нужно будет брать длительные отпуска и постоянно говорить на эту тему с командой. В отсутствие регламента пример лидеров становится жизненно важным. Патти заявила, что хочет видеть по всему офису наши открытки из Индонезии или с озера Тахо, а когда Тед Сарандос вернулся с юга Испании, потребовала, чтобы весь персонал просмотрел его слайд-шоу из семи тысяч фотографий.\n\nВ отсутствие единой политики большинство людей смотрят на окружающих и пытаются вычислить «мягкие границы» дозволенного. Я всегда любил путешествовать и еще до отмены графика отпусков успел побывать во многих странах. Но после того как мы перешли на свободный режим, я стал гораздо больше рассказывать о своих поездках и впечатлениях всем, кто был готов слушать.\n\nКраха не случилось, мы лишь дали нашим звездам больше возможностей распоряжаться собственной жизнью.`
-        }, {
-            title: "ПРЕМИИ МЕШАЮТ ГИБКОСТИ",
-            text: `Зачастую премии выдаются за рост годовой выручки, рост цен на акции или иные метрики и показатели которые могут не отражать суть всей работы, а лишь заставлять сотрудников концентрироваться на выполнении этих kpi, нежели на развитии компании и самих себя. Но что, если через пять лет какому-нибудь подразделению ради сохранения конкурентоспособности придется перестроиться? Резкая смена курса потребует инвестиций и экспериментов, способных частично съесть годовую прибыль. И цена акций тоже может упасть. Какой же руководитель пойдет на такой риск? Вот почему такие компании, как Warner или Disney, не всегда успешно вписываются в новые реалии. А в Netflix это удавалось неоднократно.\n\nКроме того, я не очень-то верю, что профессионал высочайшего уровня будет сильнее стараться, если помахать перед ним пачкой купюр. Настоящие мастера, как правило, работают на совесть и стремятся к совершенству независимо от того, светит ли им дополнительная награда. Мне очень нравятся слова бывшего главы «Deutsche bank» Джона Крайена: «Понятия не имею, почему мне предложили контракт со всякими бонусами. Уверяю вас, я не стану лучше или хуже работать в такой-то год или в такой-то день оттого, что мне дадут больше или меньше денег». Под этой цитатой подпишется любой специалист, который не зря ест свой хлеб.\n\nСтудентам предложили заработать крупную сумму (600 долларов) или более скромную (60 долларов), выполнив два задания: одно требовало умственных усилий (сложение чисел), для второго был нужен чисто механический навык (как можно быстрее нажимать на клавиши). Мы обнаружили, что там, где требовались только механические действия, обещанная награда сработала предсказуемым образом: чем больше сумма, тем лучше показатели. Но когда мы добавили задание, предполагавшее хотя бы минимальные умственные усилия, картина оказалась точно такой же, как в индийском эксперименте: обещание крупного вознаграждения понижало качество работы.`
-        }, {
-            title: "КРИЧИТЕ О ПРОВАЛАХ",
-            text: `Почти десять лет спустя, в 2007 году, я вошел в совет директоров Microsoft. Стив Балмер (который тогда занимал в компании пост СЕО, генерального директора) - персонаж крупный, яркий и шумный. Он весьма откровенно каялся в своих ошибках и мог, например, сказать: «Вот, поглядите, что я тут наворотил!» Это меня сразу подкупило. Какой искренний и самокритичный парень! И вдруг я понял: да у меня же на него нормальная человеческая реакция — доверять тем, кто не боится вслух признать свои ошибки.\n\nДа и примеры Рида Хастинга, то как он при всех признавал ошибку Qwikster.`
-        }, {
-            title: "РИСКУЙТЕ",
-            text: `Когда я пришла в Netflix, Джек посоветовал считать, что мне выдали стопку фишек. Я могу поставить их на любой проект, который посчитаю перспективным. Чтобы делать удачные ставки, нужно много работать и тщательно обдумывать каждый шаг, и задача Джека — научить меня именно этому.\n\nОдни ставки сыграют, другие — нет. О моей работе будут судить не по успеху каждого отдельно взятого выигрыша, а по моей общей способности использовать фишки так, чтобы рабочий процесс двигался вперед. Джек предельно четко дал мне понять: в Netflix не увольняют за то, что одна ставка оказалась неудачной. Работу можно потерять, если вообще не используешь фишки, чтобы сорвать большой куш, или допускаешь промахи раз за разом.\n\nОдни ставки сыграют, другие - нет. Об успехах сотрудника будут судить по общему итогу ставок, а не по каждому конкретному результату.`
-        }, {
-            title: "ПРО УВОЛЬНЕНИЯ",
-            text: `Наша цель - сделать так, чтобы увольнение из Netflix перестало считаться постыдным. Представим себе, например, олимпийскую сборную по хоккею. Вылететь из основного состава команды, конечно, очень печально. Но твои близкие все равно будут гордиться тем, что у тебя хватило сил и таланта в него попасть. Расставаясь с сотрудниками, мы надеемся на такое же отношение. Мы остаемся друзьями, и никакого позора тут нет.\n\nОдин из наиболее ярких примеров — история самой Патти Маккорд. Проработав с ней больше десяти лет, я начал чувствовать, что лучше бы поручить ее роль кому-то другому. Я поделился этими мыслями с Патти, и мы вместе постарались понять, откуда возникло такое ощущение. Выяснилось, что Патти уже давно хочется работать поменьше, она ушла из компании, и проблема решилась наилучшим образом. Теперь, семь лет спустя, она остается моим близким другом и неофициальным советником.\n\nДругой пример — Лесли Килгор. Она была великолепным директором по маркетингу и сыграла ключевую роль в становлении нашей культуры, в битве с компанией Blockbuster да и вообще в эволюции Netflix. Она была и остается прекрасным бизнес-стратегом. Но с выходом сериала «Карточный домик» я осознал, что наше будущее скорее в продвижении своего контента, чем в покупке чужого, и понял: на месте Лесли должен быть человек с обширным опытом работы в Голливуде (особенно если учесть, что сам я ничего не понимаю в шоу-бизнесе). Как следствие, я освободил Лесли от занимаемой должности, но она выразила желание войти в совет директоров компании. И вот уже много лет это прекрасный директор и мой начальник.`
-        }, {
-            title: "ПРО КОНКУРЕНЦИЮ ВНУТРИ",
-            text: `Мы хотим, чтобы наши менеджеры регулярно задавали себе контрольные вопросы в отношении каждого сотрудника. Но мы всеми силами избегаем ранжирования и повальных увольнений. «Вы должны уволить Х процентов сотрудников» — вот образец тех самых правил и процедур, которых мы избегаем. Конечно, таким способом можно избавиться от заурядных работников, но командный дух этого не переживет. Мне нужно, чтобы первоклассные сотрудники Netflix состязались с нашими конкурентами, а не друг с другом. Устраивая чистки рядов, вы потеряете в плане сотрудничества ничуть не меньше, чем выиграете в плане концентрации таланта.\n\nНаше отличие от спортивных команд в том, что количество наших игроков не ограничено жесткими правилами. И чтобы выиграл один, другому совершенно необязательно проиграть. Напротив, чем больше талантов у нас в команде, тем значительнее наши успехи. Чем масштабнее успехи, тем сильнее мы растем. Чем активнее мы растем, тем больше у нас открывается новых позиций. Чем больше позиций, тем больше в команде места для талантливых сотрудников.`
-        }, {
-            title: "КОНКУРЕНЦИЯ ВНУТРИ+",
-            text: `Профессор австралийского университета Нового Южного Уэльса Уилл Фелпс провел увлекательный эксперимент, наглядно показавший, насколько заразительным бывает поведение на рабочем месте. Он собрал несколько групп из четырех студентов и попросил каждую команду выполнить некую административную задачу за 45 минут — академический час. Командам, которые справятся наилучшим образом, было обещано вознаграждение в 100 долларов.\n\nВ некоторые группы без ведома остальных студентов внедрили актеров, причем каждому поручили строго определенную роль: «лентяя», который быстро теряет интерес к работе, кладет ноги на стол и начинает рассылать сообщения; «скептика-критикана», который грубо реагирует на каждую идею и постоянно отпускает реплики вроде «Вы что, издеваетесь?!» И «Чему вас только учили?!»; «депрессивного нытика», который выглядит так, будто у него вчера скончался любимый котик, — он жалуется, что задача непомерно сложная, вслух сомневается, что команда сможет выиграть, и время от времени роняет голову на руки. Актеры играли натурально, другие участники эксперимента даже не заподозрили, что невесть откуда взявшиеся незнакомцы - не обычные студенты.\n\nПочти сразу Фелпс обнаружил: даже когда члены группы исключительно умны и талантливы, деструктивное поведение «подсадки» резко снижает показатели всей команды. Результаты десятков экспериментов, проведенных в течение нескольких месяцев, были схожими: группы с «засланным казачком» в составе отставали от лидеров на 30-40%.\n\nРезультаты Фелиса опровергли прежние представления о том, что отдельные члены группы воспринимают нормы и ценности коллектива и со временем начинают подстраиваться под них - выявилась как раз обратная зависимость. Поведение одного человека вскоре начинало влиять на всю команду.`
-        }, {
-            title: "МЫ НЕ СЕМЬЯ",
-            text: `На протяжении многих веков ремесла передавались из поколения в поколение, а бизнес был почти исключительно семейным. Неудивительно, что метафора семьи до сих пор так популярна в деловом мире. Семья символизирует верность, сплоченность, постоянную взаимовыручку. Но в семье тебя принимают любым, даже если ты будешь нести всеобщий вред и усложнять всем жизнь.`
-        }];
+        // ===== NETFLIX+ ДАННЫЕ =====
+        const netflixArticles = [
+            { title: "РУКОВОДСТВО ТОЖЕ НУЖДАЕТСЯ В КРИТИКЕ", text: `Все помнят сказку «Новое платье короля» — про глупого монарха, которого убедили, что он одет в роскошнейший наряд, тогда как в действительности он расхаживал перед подданными в чем мать родила. Никто не посмел сказать ему об этом, кроме ребенка, ничего не знавшего о власти, субординации и последствиях ее нарушения.\n\nЧем выше должность, тем реже человек слышит критику в свой адрес и тем выше вероятность, что однажды, фигурально выражаясь, он придет на работу голым — то есть совершит ошибку, которая станет очевидна всем, кроме него.` },
+            { title: "ПРАВИЛЬНАЯ КРИТИКА / ОТКРЫТОСТЬ", text: `Спустя неделю ко мне неожиданно подошел его непосредственный начальник. Он был в курсе нашего конфликта и сказал, что формально я, в общем-то, прав, но знаю ли я, что после моей выволочки тот инженер совершенно утратил интерес к работе? Может быть, я хочу подорвать работоспособность всего отдела? Нет, этого я, разумеется, не хотел. Коллега продолжил.\n\n- Как вы думаете, вы сумели бы высказать все то же самое в такой форме, чтобы человек поверил в свои силы и захотел сам исправить ошибки?\n- Ну да, — ответил я. - Наверное, сумел бы.\n- Хорошо. Пожалуйста, в дальнейшем постарайтесь поступать именно так.\n\nИ я стал стараться.\nВся эта беседа заняла не более двух минут и возымела мгновенное действие. Заметьте, коллега не стал называть меня хамом или плохим руководителем. Он просто задал два вопроса: «Хотите ли вы навредить компании?» и «Можете ли вы вести себя по-человечески?» Разумеется, на каждый из них возможен лишь один ответ. Если бы он просто сказал «Вы хам», я бы, наверное, ответил: «Ничего подобного». Но он высказал претензии в вопросительной форме, и мне волей-неволей пришлось задуматься и немного покопаться в себе.` },
+            { title: "ГРАФИК ОТПУСКОВ", text: `Мы все иногда удаленно работаем по выходным, отвечаем на письма и сообщения в любое время суток, берем полдня отгула по семейным обстоятельствам. При этом никто не ведет учет отработанных часов. Почему же тогда мы считаем количество свободных дней?\n\nВ 2003 году, на той самой встрече, где мы договорились о свободном порядке предоставления отпусков, она настаивала: чтобы эксперимент увенчался успехом, нам, руководителям, нужно будет брать длительные отпуска и постоянно говорить на эту тему с командой. В отсутствие регламента пример лидеров становится жизненно важным. Патти заявила, что хочет видеть по всему офису наши открытки из Индонезии или с озера Тахо, а когда Тед Сарандос вернулся с юга Испании, потребовала, чтобы весь персонал просмотрел его слайд-шоу из семи тысяч фотографий.\n\nВ отсутствие единой политики большинство людей смотрят на окружающих и пытаются вычислить «мягкие границы» дозволенного. Я всегда любил путешествовать и еще до отмены графика отпусков успел побывать во многих странах. Но после того как мы перешли на свободный режим, я стал гораздо больше рассказывать о своих поездках и впечатлениях всем, кто был готов слушать.\n\nКраха не случилось, мы лишь дали нашим звездам больше возможностей распоряжаться собственной жизнью.` },
+            { title: "ПРЕМИИ МЕШАЮТ ГИБКОСТИ", text: `Зачастую премии выдаются за рост годовой выручки, рост цен на акции или иные метрики и показатели которые могут не отражать суть всей работы, а лишь заставлять сотрудников концентрироваться на выполнении этих kpi, нежели на развитии компании и самих себя. Но что, если через пять лет какому-нибудь подразделению ради сохранения конкурентоспособности придется перестроиться? Резкая смена курса потребует инвестиций и экспериментов, способных частично съесть годовую прибыль. И цена акций тоже может упасть. Какой же руководитель пойдет на такой риск? Вот почему такие компании, как Warner или Disney, не всегда успешно вписываются в новые реалии. А в Netflix это удавалось неоднократно.\n\nКроме того, я не очень-то верю, что профессионал высочайшего уровня будет сильнее стараться, если помахать перед ним пачкой купюр. Настоящие мастера, как правило, работают на совесть и стремятся к совершенству независимо от того, светит ли им дополнительная награда. Мне очень нравятся слова бывшего главы «Deutsche bank» Джона Крайена: «Понятия не имею, почему мне предложили контракт со всякими бонусами. Уверяю вас, я не стану лучше или хуже работать в такой-то год или в такой-то день оттого, что мне дадут больше или меньше денег». Под этой цитатой подпишется любой специалист, который не зря ест свой хлеб.\n\nСтудентам предложили заработать крупную сумму (600 долларов) или более скромную (60 долларов), выполнив два задания: одно требовало умственных усилий (сложение чисел), для второго был нужен чисто механический навык (как можно быстрее нажимать на клавиши). Мы обнаружили, что там, где требовались только механические действия, обещанная награда сработала предсказуемым образом: чем больше сумма, тем лучше показатели. Но когда мы добавили задание, предполагавшее хотя бы минимальные умственные усилия, картина оказалась точно такой же, как в индийском эксперименте: обещание крупного вознаграждения понижало качество работы.` },
+            { title: "КРИЧИТЕ О ПРОВАЛАХ", text: `Почти десять лет спустя, в 2007 году, я вошел в совет директоров Microsoft. Стив Балмер (который тогда занимал в компании пост СЕО, генерального директора) - персонаж крупный, яркий и шумный. Он весьма откровенно каялся в своих ошибках и мог, например, сказать: «Вот, поглядите, что я тут наворотил!» Это меня сразу подкупило. Какой искренний и самокритичный парень! И вдруг я понял: да у меня же на него нормальная человеческая реакция — доверять тем, кто не боится вслух признать свои ошибки.\n\nДа и примеры Рида Хастинга, то как он при всех признавал ошибку Qwikster.` },
+            { title: "РИСКУЙТЕ", text: `Когда я пришла в Netflix, Джек посоветовал считать, что мне выдали стопку фишек. Я могу поставить их на любой проект, который посчитаю перспективным. Чтобы делать удачные ставки, нужно много работать и тщательно обдумывать каждый шаг, и задача Джека — научить меня именно этому.\n\nОдни ставки сыграют, другие — нет. О моей работе будут судить не по успеху каждого отдельно взятого выигрыша, а по моей общей способности использовать фишки так, чтобы рабочий процесс двигался вперед. Джек предельно четко дал мне понять: в Netflix не увольняют за то, что одна ставка оказалась неудачной. Работу можно потерять, если вообще не используешь фишки, чтобы сорвать большой куш, или допускаешь промахи раз за разом.\n\nОдни ставки сыграют, другие - нет. Об успехах сотрудника будут судить по общему итогу ставок, а не по каждому конкретному результату.` },
+            { title: "ПРО УВОЛЬНЕНИЯ", text: `Наша цель - сделать так, чтобы увольнение из Netflix перестало считаться постыдным. Представим себе, например, олимпийскую сборную по хоккею. Вылететь из основного состава команды, конечно, очень печально. Но твои близкие все равно будут гордиться тем, что у тебя хватило сил и таланта в него попасть. Расставаясь с сотрудниками, мы надеемся на такое же отношение. Мы остаемся друзьями, и никакого позора тут нет.\n\nОдин из наиболее ярких примеров — история самой Патти Маккорд. Проработав с ней больше десяти лет, я начал чувствовать, что лучше бы поручить ее роль кому-то другому. Я поделился этими мыслями с Патти, и мы вместе постарались понять, откуда возникло такое ощущение. Выяснилось, что Патти уже давно хочется работать поменьше, она ушла из компании, и проблема решилась наилучшим образом. Теперь, семь лет спустя, она остается моим близким другом и неофициальным советником.\n\nДругой пример — Лесли Килгор. Она была великолепным директором по маркетингу и сыграла ключевую роль в становлении нашей культуры, в битве с компанией Blockbuster да и вообще в эволюции Netflix. Она была и остается прекрасным бизнес-стратегом. Но с выходом сериала «Карточный домик» я осознал, что наше будущее скорее в продвижении своего контента, чем в покупке чужого, и понял: на месте Лесли должен быть человек с обширным опытом работы в Голливуде (особенно если учесть, что сам я ничего не понимаю в шоу-бизнесе). Как следствие, я освободил Лесли от занимаемой должности, но она выразила желание войти в совет директоров компании. И вот уже много лет это прекрасный директор и мой начальник.` },
+            { title: "ПРО КОНКУРЕНЦИЮ ВНУТРИ", text: `Мы хотим, чтобы наши менеджеры регулярно задавали себе контрольные вопросы в отношении каждого сотрудника. Но мы всеми силами избегаем ранжирования и повальных увольнений. «Вы должны уволить Х процентов сотрудников» — вот образец тех самых правил и процедур, которых мы избегаем. Конечно, таким способом можно избавиться от заурядных работников, но командный дух этого не переживет. Мне нужно, чтобы первоклассные сотрудники Netflix состязались с нашими конкурентами, а не друг с другом. Устраивая чистки рядов, вы потеряете в плане сотрудничества ничуть не меньше, чем выиграете в плане концентрации таланта.\n\nНаше отличие от спортивных команд в том, что количество наших игроков не ограничено жесткими правилами. И чтобы выиграл один, другому совершенно необязательно проиграть. Напротив, чем больше талантов у нас в команде, тем значительнее наши успехи. Чем масштабнее успехи, тем сильнее мы растем. Чем активнее мы растем, тем больше у нас открывается новых позиций. Чем больше позиций, тем больше в команде места для талантливых сотрудников.` },
+            { title: "КОНКУРЕНЦИЯ ВНУТРИ+", text: `Профессор австралийского университета Нового Южного Уэльса Уилл Фелпс провел увлекательный эксперимент, наглядно показавший, насколько заразительным бывает поведение на рабочем месте. Он собрал несколько групп из четырех студентов и попросил каждую команду выполнить некую административную задачу за 45 минут — академический час. Командам, которые справятся наилучшим образом, было обещано вознаграждение в 100 долларов.\n\nВ некоторые группы без ведома остальных студентов внедрили актеров, причем каждому поручили строго определенную роль: «лентяя», который быстро теряет интерес к работе, кладет ноги на стол и начинает рассылать сообщения; «скептика-критикана», который грубо реагирует на каждую идею и постоянно отпускает реплики вроде «Вы что, издеваетесь?!» И «Чему вас только учили?!»; «депрессивного нытика», который выглядит так, будто у него вчера скончался любимый котик, — он жалуется, что задача непомерно сложная, вслух сомневается, что команда сможет выиграть, и время от времени роняет голову на руки. Актеры играли натурально, другие участники эксперимента даже не заподозрили, что невесть откуда взявшиеся незнакомцы - не обычные студенты.\n\nПочти сразу Фелпс обнаружил: даже когда члены группы исключительно умны и талантливы, деструктивное поведение «подсадки» резко снижает показатели всей команды. Результаты десятков экспериментов, проведенных в течение нескольких месяцев, были схожими: группы с «засланным казачком» в составе отставали от лидеров на 30-40%.\n\nРезультаты Фелиса опровергли прежние представления о том, что отдельные члены группы воспринимают нормы и ценности коллектива и со временем начинают подстраиваться под них - выявилась как раз обратная зависимость. Поведение одного человека вскоре начинало влиять на всю команду.` },
+            { title: "МЫ НЕ СЕМЬЯ", text: `На протяжении многих веков ремесла передавались из поколения в поколение, а бизнес был почти исключительно семейным. Неудивительно, что метафора семьи до сих пор так популярна в деловом мире. Семья символизирует верность, сплоченность, постоянную взаимовыручку. Но в семье тебя принимают любым, даже если ты будешь нести всеобщий вред и усложнять всем жизнь.` }
+        ];
 
         // ===== РЕНДЕР NETFLIX+ =====
         const netflixPage = document.getElementById('netflixPage');
@@ -820,46 +375,36 @@
         const mainPage = document.getElementById('mainPage');
         const mainHeader = document.getElementById('mainHeader');
 
-        function renderNetflix() {
-            netflixArticles.forEach((article, index) => {
-                const a = document.createElement('a');
-                a.href = `#article-${index}`;
-                a.textContent = `${index + 1}. ${article.title}`;
-                netflixToc.appendChild(a);
-            });
+        netflixArticles.forEach((article, index) => {
+            const a = document.createElement('a');
+            a.href = `#article-${index}`;
+            a.textContent = `${index + 1}. ${article.title}`;
+            netflixToc.appendChild(a);
+        });
 
-            netflixArticles.forEach((article, index) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'netflix-article';
-                wrapper.id = `article-${index}`;
-
-                const num = document.createElement('div');
-                num.className = 'num';
-                num.textContent = `${index + 1}.`;
-
-                const heading = document.createElement('div');
-                heading.className = 'heading';
-                heading.textContent = article.title;
-
-                const text = document.createElement('div');
-                text.className = 'text';
-                text.textContent = article.text;
-
-                wrapper.appendChild(num);
-                wrapper.appendChild(heading);
-                wrapper.appendChild(text);
-
-                if (index < netflixArticles.length - 1) {
-                    const divider = document.createElement('hr');
-                    divider.className = 'netflix-divider';
-                    wrapper.appendChild(divider);
-                }
-
-                netflixArticlesContainer.appendChild(wrapper);
-            });
-        }
-
-        renderNetflix();
+        netflixArticles.forEach((article, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'netflix-article';
+            wrapper.id = `article-${index}`;
+            const num = document.createElement('div');
+            num.className = 'num';
+            num.textContent = `${index + 1}.`;
+            const heading = document.createElement('div');
+            heading.className = 'heading';
+            heading.textContent = article.title;
+            const text = document.createElement('div');
+            text.className = 'text';
+            text.textContent = article.text;
+            wrapper.appendChild(num);
+            wrapper.appendChild(heading);
+            wrapper.appendChild(text);
+            if (index < netflixArticles.length - 1) {
+                const divider = document.createElement('hr');
+                divider.className = 'netflix-divider';
+                wrapper.appendChild(divider);
+            }
+            netflixArticlesContainer.appendChild(wrapper);
+        });
 
         // ===== НАВИГАЦИЯ =====
         const menuToggle = document.getElementById('menuToggle');
@@ -867,44 +412,39 @@
         const menuPanel = document.getElementById('menuPanel');
         const menuClose = document.getElementById('menuClose');
 
-        function openMenu() {
-            menuOverlay.classList.add('open');
+        function openMenu() { menuOverlay.classList.add('open');
             menuPanel.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
+            document.body.style.overflow = 'hidden'; }
 
-        function closeMenu() {
-            menuOverlay.classList.remove('open');
+        function closeMenu() { menuOverlay.classList.remove('open');
             menuPanel.classList.remove('open');
-            document.body.style.overflow = '';
-        }
+            document.body.style.overflow = ''; }
 
         menuToggle.addEventListener('click', () => {
-            if (menuPanel.classList.contains('open')) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+            if (menuPanel.classList.contains('open')) closeMenu();
+            else openMenu();
         });
-
         menuOverlay.addEventListener('click', closeMenu);
         menuClose.addEventListener('click', closeMenu);
 
+        // ===== ОТКРЫТИЕ NETFLIX+ =====
         document.querySelector('.menu-item[data-target="netflix"]').addEventListener('click', () => {
             closeMenu();
             mainPage.style.display = 'none';
-            mainHeader.style.display = 'none';  // ← УБИРАЕМ ШАПКУ НА NETFLIX+
+            mainHeader.style.display = 'none';
             netflixPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // ===== НАЗАД =====
         netflixBack.addEventListener('click', () => {
             netflixPage.classList.remove('active');
             mainPage.style.display = 'block';
-            mainHeader.style.display = 'flex';  // ← ВОЗВРАЩАЕМ ШАПКУ
+            mainHeader.style.display = 'flex';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // ===== СКРОЛЛ ПО ССЫЛКАМ =====
         document.querySelectorAll('.netflix-toc a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
