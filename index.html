@@ -29,7 +29,7 @@
             overflow: hidden;
         }
 
-        /* ===== ШАПКА ===== */
+        /* ===== ШАПКА (только на главной) ===== */
         .header-row {
             display: flex;
             align-items: center;
@@ -269,10 +269,15 @@
         .netflix-page.active {
             display: block;
         }
+        /* Скрываем шапку (Helper + ☰) на странице Netflix+ */
+        .netflix-page .header-row {
+            display: none;
+        }
+
         .netflix-back {
             background: none;
             border: none;
-            font-size: 28px;
+            font-size: 20px;
             color: #0b1a33;
             cursor: pointer;
             padding: 4px 0;
@@ -375,14 +380,17 @@
             .netflix-article .heading {
                 font-size: 18px;
             }
+            .netflix-back {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app">
 
-        <!-- ===== ШАПКА ===== -->
-        <div class="header-row">
+        <!-- ===== ШАПКА (только на главной) ===== -->
+        <div class="header-row" id="mainHeader">
             <button class="menu-btn" id="menuToggle" aria-label="Меню">☰</button>
             <div class="header-center">
                 <h1>Helper</h1>
@@ -838,13 +846,12 @@
 
         function renderNetflix() {
             // Содержание
-            const tocLinks = netflixArticles.map((article, index) => {
+            netflixArticles.forEach((article, index) => {
                 const a = document.createElement('a');
                 a.href = `#article-${index}`;
                 a.textContent = `${index + 1}. ${article.title}`;
-                return a;
+                netflixToc.appendChild(a);
             });
-            tocLinks.forEach(link => netflixToc.appendChild(link));
 
             // Статьи
             netflixArticles.forEach((article, index) => {
