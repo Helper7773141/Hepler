@@ -269,10 +269,6 @@
         .netflix-page.active {
             display: block;
         }
-        /* Скрываем шапку (Helper + ☰) на странице Netflix+ */
-        .netflix-page .header-row {
-            display: none;
-        }
 
         .netflix-back {
             background: none;
@@ -404,7 +400,7 @@
             <div id="bookContainer"></div>
         </div>
 
-        <!-- ===== СТРАНИЦА NETFLIX+ ===== -->
+        <!-- ===== СТРАНИЦА NETFLIX+ (шапка УБРАНА полностью) ===== -->
         <div class="netflix-page" id="netflixPage">
             <button class="netflix-back" id="netflixBack">← Назад</button>
             <div class="netflix-title">Netflix+</div>
@@ -845,7 +841,6 @@
         const mainPage = document.getElementById('mainPage');
 
         function renderNetflix() {
-            // Содержание
             netflixArticles.forEach((article, index) => {
                 const a = document.createElement('a');
                 a.href = `#article-${index}`;
@@ -853,7 +848,6 @@
                 netflixToc.appendChild(a);
             });
 
-            // Статьи
             netflixArticles.forEach((article, index) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'netflix-article';
@@ -918,7 +912,6 @@
         menuOverlay.addEventListener('click', closeMenu);
         menuClose.addEventListener('click', closeMenu);
 
-        // Клик по пункту меню "Netflix+"
         document.querySelector('.menu-item[data-target="netflix"]').addEventListener('click', () => {
             closeMenu();
             mainPage.style.display = 'none';
@@ -926,16 +919,12 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Кнопка "Назад" на странице Netflix+
         netflixBack.addEventListener('click', () => {
             netflixPage.classList.remove('active');
             mainPage.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ============================================================
-        // ПЛАВНЫЙ СКРОЛЛ ПО ССЫЛКАМ В СОДЕРЖАНИИ
-        // ============================================================
         document.querySelectorAll('.netflix-toc a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
