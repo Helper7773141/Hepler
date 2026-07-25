@@ -134,15 +134,6 @@
             border-color: #0b1a33;
             background: #fff;
         }
-        .counter {
-            font-size: 14px;
-            color: #6b7a8f;
-            margin-bottom: 16px;
-        }
-        .counter span {
-            font-weight: 600;
-            color: #0b1a33;
-        }
         .book {
             border-bottom: 1px solid #edf2f7;
         }
@@ -272,7 +263,6 @@
             </div>
         </div>
         <input type="text" class="search-box" id="searchInput" placeholder="Поиск по названию или содержанию..." />
-        <div class="counter" id="counter">Показано: <span id="countDisplay">0</span></div>
         <div id="bookContainer"></div>
     </div>
 
@@ -512,11 +502,10 @@
         }];
 
         // ============================================================
-        // РЕНДЕР
+        // РЕНДЕР (без счётчика)
         // ============================================================
         const container = document.getElementById('bookContainer');
         const searchInput = document.getElementById('searchInput');
-        const countDisplay = document.getElementById('countDisplay');
         let timeoutId = null;
 
         function escapeRegExp(string) {
@@ -650,28 +639,6 @@
                 bookDiv.appendChild(itemsDiv);
                 container.appendChild(bookDiv);
             });
-
-            countDisplay.textContent = visibleCount;
-
-            if (lowerFilter) {
-                document.querySelectorAll('.item-text').forEach(item => {
-                    if (item.querySelector('.highlight')) {
-                        item.style.transition = 'background 0.2s';
-                        item.style.background = 'rgba(0, 120, 255, 0.2)';
-                        setTimeout(() => { item.style.background = '#f8fafc'; }, 600);
-                    }
-                });
-                document.querySelectorAll('.book').forEach((bookEl) => {
-                    if (!bookEl.classList.contains('hidden')) {
-                        const header = bookEl.querySelector('.book-header');
-                        const items = bookEl.querySelector('.book-items');
-                        if (header && items) {
-                            items.classList.add('open');
-                            header.classList.add('open');
-                        }
-                    }
-                });
-            }
         }
 
         searchInput.addEventListener('input', (e) => {
