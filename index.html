@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helper</title>
     <style>
-        /* ===== ВСЁ ТОЧНО КАК В ТВОЁМ ФИНАЛЬНОМ КОДЕ ===== */
+        /* ===== ВСЁ БЕЗ ИЗМЕНЕНИЙ ===== */
         * {
             margin: 0;
             padding: 0;
@@ -512,7 +512,7 @@
         }];
 
         // ============================================================
-        // РЕНДЕР (БЕЗ ВСЯКОГО СКРОЛЛА)
+        // РЕНДЕР
         // ============================================================
         const container = document.getElementById('bookContainer');
         const searchInput = document.getElementById('searchInput');
@@ -612,7 +612,7 @@
                 });
 
                 // ============================================================
-                // КЛИК — ТОЛЬКО ПЛАВНОЕ ОТКРЫТИЕ/ЗАКРЫТИЕ, БЕЗ СКРОЛЛА
+                // КЛИК — ПЛАВНЫЙ СКРОЛЛ К КНИГЕ (ДЛЯ ВСЕХ)
                 // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
@@ -631,6 +631,15 @@
                     if (!isOpen) {
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
+
+                        setTimeout(() => {
+                            const rect = bookDiv.getBoundingClientRect();
+                            const offset = 30;
+                            window.scrollTo({
+                                top: window.scrollY + rect.top - offset,
+                                behavior: 'smooth'
+                            });
+                        }, 400);
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
@@ -673,7 +682,7 @@
         renderBooks();
 
         // ============================================================
-        // ЛОГИКА МЕНЮ
+        // МЕНЮ
         // ============================================================
         const menuToggle = document.getElementById('menuToggle');
         const menuOverlay = document.getElementById('menuOverlay');
