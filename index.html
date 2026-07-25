@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helper</title>
     <style>
-        /* ===== БАЗА (без изменений) ===== */
+        /* ===== ВСЁ ТОЧНО КАК В ТВОЁМ ФИНАЛЬНОМ КОДЕ ===== */
         * {
             margin: 0;
             padding: 0;
@@ -28,8 +28,6 @@
             position: relative;
             overflow: hidden;
         }
-
-        /* ===== НОВАЯ ШАПКА С ЦЕНТРОВКОЙ ===== */
         .header-row {
             display: flex;
             align-items: center;
@@ -70,8 +68,6 @@
             color: #6b7a8f;
             margin-top: -2px;
         }
-
-        /* ===== ВЫЕЗЖАЮЩЕЕ МЕНЮ (ПУСТОЕ) ===== */
         .menu-overlay {
             position: fixed;
             top: 0;
@@ -122,8 +118,6 @@
             text-align: center;
             margin-top: 40px;
         }
-
-        /* ===== ВСЁ ОСТАЛЬНОЕ — БЕЗ ИЗМЕНЕНИЙ ===== */
         .search-box {
             width: 100%;
             padding: 14px 20px;
@@ -254,8 +248,6 @@
         .hidden {
             display: none;
         }
-
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 600px) {
             .app {
                 padding: 20px 16px;
@@ -272,8 +264,6 @@
 </head>
 <body>
     <div class="app">
-
-        <!-- ===== НОВАЯ ШАПКА ===== -->
         <div class="header-row">
             <button class="menu-btn" id="menuToggle" aria-label="Меню">☰</button>
             <div class="header-center">
@@ -281,14 +271,11 @@
                 <div class="subtitle">Справочник</div>
             </div>
         </div>
-
-        <!-- ===== ОСТАЛЬНОЕ БЕЗ ИЗМЕНЕНИЙ ===== -->
         <input type="text" class="search-box" id="searchInput" placeholder="Поиск по названию или содержанию..." />
         <div class="counter" id="counter">Показано: <span id="countDisplay">0</span></div>
         <div id="bookContainer"></div>
     </div>
 
-    <!-- ===== МЕНЮ (ПУСТОЕ) ===== -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="menu-panel" id="menuPanel">
         <button class="menu-close" id="menuClose">✕</button>
@@ -297,7 +284,7 @@
 
     <script>
         // ============================================================
-        // ДАННЫЕ — БЕЗ ИЗМЕНЕНИЙ (твой финальный массив library)
+        // ДАННЫЕ (БЕЗ ИЗМЕНЕНИЙ)
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
@@ -525,7 +512,7 @@
         }];
 
         // ============================================================
-        // РЕНДЕР (БЕЗ ИЗМЕНЕНИЙ)
+        // РЕНДЕР (БЕЗ ВСЯКОГО СКРОЛЛА)
         // ============================================================
         const container = document.getElementById('bookContainer');
         const searchInput = document.getElementById('searchInput');
@@ -624,6 +611,9 @@
                     itemsDiv.appendChild(row);
                 });
 
+                // ============================================================
+                // КЛИК — ТОЛЬКО ПЛАВНОЕ ОТКРЫТИЕ/ЗАКРЫТИЕ, БЕЗ СКРОЛЛА
+                // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
 
@@ -641,26 +631,6 @@
                     if (!isOpen) {
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
-                        let scrollAttempts = 0;
-const maxAttempts = 3;
-const interval = 150;
-
-function safeScroll() {
-    const rect = bookDiv.getBoundingClientRect();
-    const offset = 30;
-    const targetY = window.scrollY + rect.top - offset;
-    // Если разница больше 5px — пробуем ещё раз
-    if (Math.abs(window.scrollY - targetY) > 5 && scrollAttempts < maxAttempts) {
-        scrollAttempts++;
-        setTimeout(safeScroll, interval);
-    }
-    window.scrollTo({
-        top: targetY,
-        behavior: 'smooth'
-    });
-}
-
-setTimeout(safeScroll, 300);
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
@@ -703,7 +673,7 @@ setTimeout(safeScroll, 300);
         renderBooks();
 
         // ============================================================
-        // ЛОГИКА МЕНЮ (ТОЛЬКО ОТКРЫТЬ/ЗАКРЫТЬ)
+        // ЛОГИКА МЕНЮ
         // ============================================================
         const menuToggle = document.getElementById('menuToggle');
         const menuOverlay = document.getElementById('menuOverlay');
