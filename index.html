@@ -259,18 +259,12 @@
             display: none;
         }
 
-        /* ===== СТРАНИЦА NETFLIX+ ===== */
         .netflix-page {
             display: none;
             padding: 10px 0 30px;
         }
         .netflix-page.active {
             display: block;
-        }
-
-        /* ===== СКРЫВАЕМ ШАПКУ НА СТРАНИЦЕ NETFLIX+ ===== */
-        .netflix-page.active ~ #mainHeader {
-            display: none;
         }
 
         .netflix-back {
@@ -403,11 +397,9 @@
         <div class="netflix-page" id="netflixPage">
             <button class="netflix-back" id="netflixBack">← Назад</button>
             <div class="netflix-title">Netflix+</div>
-
             <div class="netflix-toc" id="netflixToc">
                 <div class="netflix-toc-title">Содержание</div>
             </div>
-
             <div id="netflixArticles"></div>
         </div>
     </div>
@@ -422,9 +414,7 @@
     </div>
 
     <script>
-        // ============================================================
-        // ДАННЫЕ (КНИГИ)
-        // ============================================================
+        // ===== ДАННЫЕ КНИГ (полные, все 12 книг) =====
         const library = [{
             title: "ДЖЕФФРИ МУР",
             items: [
@@ -650,9 +640,7 @@
             ]
         }];
 
-        // ============================================================
-        // РЕНДЕР КНИГ
-        // ============================================================
+        // ===== РЕНДЕР КНИГ =====
         const container = document.getElementById('bookContainer');
         const searchInput = document.getElementById('searchInput');
         let timeoutId = null;
@@ -791,9 +779,7 @@
 
         renderBooks();
 
-        // ============================================================
-        // ДАННЫЕ ДЛЯ NETFLIX+
-        // ============================================================
+        // ===== ДАННЫЕ NETFLIX+ =====
         const netflixArticles = [{
             title: "РУКОВОДСТВО ТОЖЕ НУЖДАЕТСЯ В КРИТИКЕ",
             text: `Все помнят сказку «Новое платье короля» — про глупого монарха, которого убедили, что он одет в роскошнейший наряд, тогда как в действительности он расхаживал перед подданными в чем мать родила. Никто не посмел сказать ему об этом, кроме ребенка, ничего не знавшего о власти, субординации и последствиях ее нарушения.\n\nЧем выше должность, тем реже человек слышит критику в свой адрес и тем выше вероятность, что однажды, фигурально выражаясь, он придет на работу голым — то есть совершит ошибку, которая станет очевидна всем, кроме него.`
@@ -826,14 +812,13 @@
             text: `На протяжении многих веков ремесла передавались из поколения в поколение, а бизнес был почти исключительно семейным. Неудивительно, что метафора семьи до сих пор так популярна в деловом мире. Семья символизирует верность, сплоченность, постоянную взаимовыручку. Но в семье тебя принимают любым, даже если ты будешь нести всеобщий вред и усложнять всем жизнь.`
         }];
 
-        // ============================================================
-        // РЕНДЕР NETFLIX+
-        // ============================================================
+        // ===== РЕНДЕР NETFLIX+ =====
         const netflixPage = document.getElementById('netflixPage');
         const netflixToc = document.getElementById('netflixToc');
         const netflixArticlesContainer = document.getElementById('netflixArticles');
         const netflixBack = document.getElementById('netflixBack');
         const mainPage = document.getElementById('mainPage');
+        const mainHeader = document.getElementById('mainHeader');
 
         function renderNetflix() {
             netflixArticles.forEach((article, index) => {
@@ -876,9 +861,7 @@
 
         renderNetflix();
 
-        // ============================================================
-        // НАВИГАЦИЯ
-        // ============================================================
+        // ===== НАВИГАЦИЯ =====
         const menuToggle = document.getElementById('menuToggle');
         const menuOverlay = document.getElementById('menuOverlay');
         const menuPanel = document.getElementById('menuPanel');
@@ -907,22 +890,21 @@
         menuOverlay.addEventListener('click', closeMenu);
         menuClose.addEventListener('click', closeMenu);
 
-        // Переход на Netflix+
         document.querySelector('.menu-item[data-target="netflix"]').addEventListener('click', () => {
             closeMenu();
             mainPage.style.display = 'none';
+            mainHeader.style.display = 'none';  // ← УБИРАЕМ ШАПКУ НА NETFLIX+
             netflixPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Возврат на главную
         netflixBack.addEventListener('click', () => {
             netflixPage.classList.remove('active');
             mainPage.style.display = 'block';
+            mainHeader.style.display = 'flex';  // ← ВОЗВРАЩАЕМ ШАПКУ
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Плавный скролл по ссылкам в содержании
         document.querySelectorAll('.netflix-toc a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
