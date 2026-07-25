@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helper</title>
     <style>
+        /* ===== БАЗА (без изменений) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -24,17 +25,105 @@
             border-radius: 24px;
             padding: 30px 28px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
-            font-size: 32px;
+
+        /* ===== НОВАЯ ШАПКА С ЦЕНТРОВКОЙ ===== */
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 4px;
+        }
+        .menu-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #0b1a33;
+            cursor: pointer;
+            padding: 4px 8px;
+            line-height: 1;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        .menu-btn:hover {
+            opacity: 0.6;
+        }
+        .header-center {
+            text-align: center;
+        }
+        .header-center h1 {
+            font-size: 36px;
             font-weight: 700;
             color: #0b1a33;
+            letter-spacing: -0.5px;
+            margin: 0;
         }
-        .subtitle {
-            color: #6b7a8f;
+        .header-center .subtitle {
             font-size: 14px;
-            margin-bottom: 20px;
+            color: #6b7a8f;
+            margin-top: -2px;
         }
+
+        /* ===== ВЫЕЗЖАЮЩЕЕ МЕНЮ (ПУСТОЕ) ===== */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 999;
+        }
+        .menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80%;
+            max-width: 320px;
+            height: 100%;
+            background: #fff;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(-100%);
+            transition: transform 0.35s ease;
+            z-index: 1000;
+            padding: 30px 24px;
+            overflow-y: auto;
+        }
+        .menu-panel.open {
+            transform: translateX(0);
+        }
+        .menu-close {
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #0b1a33;
+            cursor: pointer;
+            margin-bottom: 30px;
+            padding: 0;
+            line-height: 1;
+        }
+        .menu-placeholder {
+            color: #6b7a8f;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* ===== ВСЁ ОСТАЛЬНОЕ — БЕЗ ИЗМЕНЕНИЙ ===== */
         .search-box {
             width: 100%;
             padding: 14px 20px;
@@ -45,6 +134,7 @@
             background: #f8fafc;
             margin-bottom: 20px;
             transition: 0.2s;
+            margin-top: 12px;
         }
         .search-box:focus {
             border-color: #0b1a33;
@@ -103,7 +193,6 @@
             max-height: 5000px;
             opacity: 1;
         }
-
         .item-row {
             display: flex;
             align-items: flex-start;
@@ -157,16 +246,6 @@
             padding-left: 4px;
             text-decoration: underline;
         }
-        .item-text .dot-list {
-            display: block;
-            padding-left: 20px;
-            margin: 2px 0;
-        }
-        .item-text .dot-list-item {
-            display: block;
-            padding-left: 4px;
-            margin: 1px 0;
-        }
         .highlight {
             background: rgba(0, 120, 255, 0.25);
             border-radius: 4px;
@@ -175,20 +254,50 @@
         .hidden {
             display: none;
         }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 600px) {
+            .app {
+                padding: 20px 16px;
+                border-radius: 16px;
+            }
+            .header-center h1 {
+                font-size: 28px;
+            }
+            .menu-btn {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <h1>Helper</h1>
-        <div class="subtitle">Справочник</div>
+
+        <!-- ===== НОВАЯ ШАПКА ===== -->
+        <div class="header-row">
+            <button class="menu-btn" id="menuToggle" aria-label="Меню">☰</button>
+            <div class="header-center">
+                <h1>Helper</h1>
+                <div class="subtitle">Справочник</div>
+            </div>
+        </div>
+
+        <!-- ===== ОСТАЛЬНОЕ БЕЗ ИЗМЕНЕНИЙ ===== -->
         <input type="text" class="search-box" id="searchInput" placeholder="Поиск по названию или содержанию..." />
         <div class="counter" id="counter">Показано: <span id="countDisplay">0</span></div>
         <div id="bookContainer"></div>
     </div>
 
+    <!-- ===== МЕНЮ (ПУСТОЕ) ===== -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="menu-panel" id="menuPanel">
+        <button class="menu-close" id="menuClose">✕</button>
+        <div class="menu-placeholder">Здесь будет меню</div>
+    </div>
+
     <script>
         // ============================================================
-        // ДАННЫЕ — ОБНОВЛЁННЫЕ
+        // ДАННЫЕ — БЕЗ ИЗМЕНЕНИЙ (твой финальный массив library)
         // ============================================================
         const library = [{
             title: "ДЖЕФФРИ МУР",
@@ -200,12 +309,9 @@
                 "<b>Высокоэффективный менеджмент.</b> 1. Выход продукции любого менеджера представляет собой произведенную продукцию организационной единицы, находящейся под его руководством<br>2. Добавляете ли вы реальную стоимость? Каким образом?<br><i>Вовлеченность</i> (компания и отрасль в целом).<br><i>Нововведения</i> (внедряете или ждете и только рассказываете о них)<br>3. Конструировать свой производственный поток, начиная с самого 'сложного' процесса<br>4. Решать проблему на как можно более низкой ступени прибавления стоимости<br>5. Базовая таблица отклонений<br><i>6. Чем более своевременна информация, тем большую она имеет ценность</i>"
             ]
         }, {
-            // ============================================================
-            // НОВАЯ КНИГА: NETFLIX (второй по счёту)
-            // ============================================================
             title: "NETFLIX",
             items: [
-                "<span style='text-decoration: underline; font-weight: 400 !important;'>Всегда действуйте в интересах компании</span>",
+                "<span style='text-decoration: underline; font-weight: 400;'>Всегда действуйте в интересах компании</span>",
                 "Почему люди молчат? Страх что вас не поддержат, что за вами закрепится плохая репутация, неприязнь тяжелых разговоров, вас посчитают выскочкой. Но в нашей корпоративной культуре, <i>промолчать - значит подвести себя и всю команду</i>",
                 "С древних времён люди стремились быть частью группы, поэтому когда нас критикую, срабатывает первобытный инстинкт, ощущение, что нас отвергнут. Именно поэтому нам так тяжело воспринимать критику",
                 "Цикл обратной связи — один из самых эффективных инструментов для повышения качества работы",
@@ -281,9 +387,6 @@
                 "ИДЕОЛОГИЯ. Core ideology. Миссия, ценности, философия. Тот фундамент и та основная шестеренка, вокруг которой будут выстраиваться все бизнес процессы. То что мы никогда не изменим. Мир, подходы, стратегия, цели, продукты - это все будет изменяться сотни раз, но наша идеология никогда. Пример Procter&Gamble.",
                 "Не пытаться заранее придумать идеальный план, а экспериментировать и оставлять то, что реально работает.",
                 "Home-grown Management.",
-                // ============================================================
-                // НОВЫЕ ПУНКТЫ 13 И 14
-                // ============================================================
                 "Упадок компаний как болезнь, которую трудно выявить, но легче вылечить на ранних стадия. И легче выявить, но труднее вылечить на поздних.",
                 "Стадии упадка:<br>• Высокомерие, порожденное успехом<br>• Неконтролируемое стремление к большему<br>• Отрицание риска и опасности<br>• Попытки спастись<br>• Капитуляция перед кризисом или гибелью"
             ]
@@ -413,9 +516,6 @@
                 "Управление риском - это не способ заработать больше, это способ остаться живым",
                 "Плохие люди испортят любую хорошую стратегию, а хорошие люди спасут любую плохую",
                 "Что важнее при выдаче кредита? Характер - ответил Джон Морган. Честный человек будет искать способы вернуть деньги. Нечестный не вернет даже при идеальных раскладах"
-                // ============================================================
-                // УДАЛЕНЫ ПУНКТЫ 42 И 43 (про руководителей и талантливых)
-                // ============================================================
             ]
         }, {
             title: "ПРИЛОЖЕНИЯ",
@@ -524,13 +624,9 @@
                     itemsDiv.appendChild(row);
                 });
 
-                // ============================================================
-                // КЛИК — ПРОСТОЙ И НАДЁЖНЫЙ
-                // ============================================================
                 header.addEventListener('click', () => {
                     const isOpen = itemsDiv.classList.contains('open');
 
-                    // Закрываем все остальные
                     document.querySelectorAll('.book-items').forEach(el => {
                         if (el !== itemsDiv) {
                             el.classList.remove('open');
@@ -543,11 +639,8 @@
                     });
 
                     if (!isOpen) {
-                        // Открываем текущий
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
-
-                        // Даём браузеру время на отрисовку и скроллим к книге
                         setTimeout(() => {
                             const rect = bookDiv.getBoundingClientRect();
                             const offset = 30;
@@ -596,6 +689,37 @@
         });
 
         renderBooks();
+
+        // ============================================================
+        // ЛОГИКА МЕНЮ (ТОЛЬКО ОТКРЫТЬ/ЗАКРЫТЬ)
+        // ============================================================
+        const menuToggle = document.getElementById('menuToggle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuPanel = document.getElementById('menuPanel');
+        const menuClose = document.getElementById('menuClose');
+
+        function openMenu() {
+            menuOverlay.classList.add('open');
+            menuPanel.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            menuOverlay.classList.remove('open');
+            menuPanel.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', () => {
+            if (menuPanel.classList.contains('open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        menuOverlay.addEventListener('click', closeMenu);
+        menuClose.addEventListener('click', closeMenu);
     </script>
 </body>
 </html>
