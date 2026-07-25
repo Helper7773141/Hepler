@@ -641,14 +641,26 @@
                     if (!isOpen) {
                         itemsDiv.classList.add('open');
                         header.classList.add('open');
-                        setTimeout(() => {
-                            const rect = bookDiv.getBoundingClientRect();
-                            const offset = 30;
-                            window.scrollTo({
-                                top: window.scrollY + rect.top - offset,
-                                behavior: 'smooth'
-                            });
-                        }, 350);
+                        let scrollAttempts = 0;
+const maxAttempts = 3;
+const interval = 150;
+
+function safeScroll() {
+    const rect = bookDiv.getBoundingClientRect();
+    const offset = 30;
+    const targetY = window.scrollY + rect.top - offset;
+    // Если разница больше 5px — пробуем ещё раз
+    if (Math.abs(window.scrollY - targetY) > 5 && scrollAttempts < maxAttempts) {
+        scrollAttempts++;
+        setTimeout(safeScroll, interval);
+    }
+    window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+    });
+}
+
+setTimeout(safeScroll, 300);
                     } else {
                         itemsDiv.classList.remove('open');
                         header.classList.remove('open');
