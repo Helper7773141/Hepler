@@ -10,34 +10,57 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 50%, #e8f4f8 100%);
+            background: linear-gradient(180deg, #f5f7fa 0%, #e8eef5 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
             justify-content: center;
             transition: background 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Красивый фон с изображением */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23c8d6e5" fill-opacity="0.4" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            z-index: -1;
+            pointer-events: none;
         }
         
         body.dark {
-            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 50%, #1a2744 100%);
+            background: linear-gradient(180deg, #1a1f2e 0%, #2d3748 100%);
+        }
+        
+        body.dark::before {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%234a5568" fill-opacity="0.3" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            opacity: 0.4;
         }
         
         .app {
             max-width: 680px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
             padding: 32px 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 8px 30px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
         }
         
         body.dark .app {
-            background: rgba(30, 41, 59, 0.95);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(30, 41, 59, 0.98);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
         /* ===== ШАПКА ===== */
@@ -60,7 +83,7 @@
             background: none;
             border: none;
             font-size: 22px;
-            color: #4a5568;
+            color: #0b1a33;
             cursor: pointer;
             padding: 8px;
             border-radius: 10px;
@@ -74,16 +97,14 @@
         
         .header-left .menu-btn:hover { 
             background: rgba(0, 0, 0, 0.05); 
-            color: #1a202c;
         }
         
         body.dark .header-left .menu-btn { 
-            color: #a0aec0; 
+            color: #e0e0e0; 
         }
         
         body.dark .header-left .menu-btn:hover { 
             background: rgba(255, 255, 255, 0.1); 
-            color: #e2e8f0;
         }
 
         .header-center {
@@ -92,33 +113,33 @@
         }
         
         .header-center .book-icon {
-            font-size: 32px;
-            color: #4f46e5;
+            font-size: 28px;
+            color: #0b1a33;
             display: block;
             margin-bottom: 4px;
             transition: color 0.3s ease;
         }
         
         body.dark .header-center .book-icon { 
-            color: #818cf8; 
+            color: #e0e0e0; 
         }
         
         .header-center h1 {
             font-size: 32px;
             font-weight: 700;
-            color: #1a202c;
+            color: #0b1a33;
             letter-spacing: -0.5px;
             margin: 0;
             transition: color 0.3s ease;
         }
         
         body.dark .header-center h1 { 
-            color: #f7fafc; 
+            color: #e0e0e0; 
         }
         
         .header-center .subtitle {
             font-size: 14px;
-            color: #718096;
+            color: #6b7a8f;
             margin-top: 2px;
             font-weight: 400;
             transition: color 0.3s ease;
@@ -136,7 +157,7 @@
             padding: 8px;
             border-radius: 10px;
             transition: all 0.2s;
-            color: #4a5568;
+            color: #0b1a33;
             width: 40px;
             height: 40px;
             display: flex;
@@ -146,25 +167,23 @@
         
         .theme-toggle:hover { 
             background: rgba(0, 0, 0, 0.05); 
-            color: #1a202c;
         }
         
         body.dark .theme-toggle { 
-            color: #a0aec0; 
+            color: #e0e0e0; 
         }
         
         body.dark .theme-toggle:hover { 
             background: rgba(255, 255, 255, 0.1); 
-            color: #e2e8f0;
         }
 
         /* ===== ПОИСК ===== */
         .search-box {
             width: 100%;
-            padding: 14px 20px 14px 48px;
+            padding: 14px 20px;
             font-size: 15px;
             border: 2px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 50px;
             outline: none;
             background: #f8fafc;
             margin-bottom: 24px;
@@ -177,25 +196,23 @@
         }
         
         .search-box:focus { 
-            border-color: #4f46e5; 
+            border-color: #0b1a33; 
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
         }
         
         body.dark .search-box { 
-            background: #2d3748; 
-            border-color: #4a5568; 
-            color: #e2e8f0; 
+            background: #2a2a2a; 
+            border-color: #444; 
+            color: #e0e0e0; 
         }
         
         body.dark .search-box::placeholder { 
-            color: #718096; 
+            color: #888; 
         }
         
         body.dark .search-box:focus { 
-            border-color: #818cf8; 
-            background: #1a202c;
-            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+            border-color: #6b7a8f; 
+            background: #333;
         }
 
         /* ===== КНИГИ ===== */
@@ -219,17 +236,15 @@
         
         .book-header:hover {
             background: #f8fafc;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
         
         body.dark .book-header { 
-            background: #2d3748; 
-            border-color: #4a5568;
+            background: #2a2a2a; 
+            border-color: #444;
         }
         
         body.dark .book-header:hover { 
-            background: #1a202c;
+            background: #333;
         }
 
         .book-header .book-title-wrap {
@@ -241,7 +256,7 @@
         
         .book-header .book-icon {
             font-size: 20px;
-            color: #4f46e5;
+            color: #0b1a33;
             width: 24px;
             text-align: center;
             transition: color 0.3s ease;
@@ -249,24 +264,24 @@
         }
         
         body.dark .book-header .book-icon { 
-            color: #818cf8; 
+            color: #e0e0e0; 
         }
         
         .book-title {
             font-weight: 600;
             font-size: 16px;
-            color: #1a202c;
+            color: #0b1a33;
             transition: color 0.3s ease;
             letter-spacing: 0.3px;
         }
         
         body.dark .book-title { 
-            color: #f7fafc; 
+            color: #e0e0e0; 
         }
         
         .book-arrow {
             font-size: 12px;
-            color: #a0aec0;
+            color: #94a3b8;
             transition: transform 0.3s ease;
             margin-left: 12px;
             width: 24px;
@@ -275,11 +290,6 @@
         
         .book-header.open .book-arrow { 
             transform: rotate(180deg); 
-            color: #4f46e5;
-        }
-        
-        body.dark .book-header.open .book-arrow {
-            color: #818cf8;
         }
 
         /* ===== СПИСОК ЭЛЕМЕНТОВ ===== */
@@ -306,97 +316,88 @@
         }
         
         .item-num {
-            font-weight: 600;
+            font-weight: 400;
             font-size: 13px;
-            color: #4f46e5;
+            color: #6b7a8f;
             min-width: 24px;
-            text-align: center;
+            text-align: right;
             flex-shrink: 0;
             margin-top: 3px;
-            background: rgba(79, 70, 229, 0.1);
-            padding: 2px 6px;
-            border-radius: 6px;
         }
         
         body.dark .item-num {
-            color: #818cf8;
-            background: rgba(129, 140, 248, 0.2);
+            color: #a0aec0;
         }
         
         .item-text {
             flex: 1;
             padding: 8px 12px;
-            border-radius: 10px;
-            background: #f7fafc;
-            color: #2d3748;
+            border-radius: 8px;
+            background: #f8fafc;
+            color: #1e293b;
             font-size: 14px;
             line-height: 1.6;
             transition: all 0.2s ease;
         }
         
         body.dark .item-text { 
-            background: #1a202c; 
-            color: #e2e8f0; 
+            background: #2a2a2a; 
+            color: #e0e0e0; 
         }
         
         .item-text i { 
             font-style: italic; 
-            color: #4f46e5; 
+            color: #0b1a33; 
         }
         
         body.dark .item-text i {
-            color: #818cf8;
+            color: #e0e0e0;
         }
         
         .item-text b { 
             font-weight: 700; 
-            color: #1a202c; 
+            color: #0b1a33; 
         }
         
         body.dark .item-text b {
-            color: #f7fafc;
+            color: #e0e0e0;
         }
         
         .item-text .section-title { 
             font-weight: 700; 
             font-size: 15px; 
-            color: #1a202c; 
+            color: #0b1a33; 
             display: block; 
             margin: 6px 0 4px 0; 
             padding-left: 4px;
         }
         
         body.dark .item-text .section-title {
-            color: #f7fafc;
+            color: #e0e0e0;
         }
         
         .item-text .book-subhead { 
             font-weight: 600; 
             font-size: 14px; 
-            color: #1a202c; 
+            color: #0b1a33; 
             display: block; 
             margin: 6px 0 4px 0; 
             padding-left: 4px;
             text-decoration: underline;
-            text-decoration-color: #4f46e5;
         }
         
         body.dark .item-text .book-subhead {
-            color: #f7fafc;
-            text-decoration-color: #818cf8;
+            color: #e0e0e0;
         }
         
         .highlight { 
-            background: rgba(79, 70, 229, 0.2); 
+            background: rgba(0, 120, 255, 0.25); 
             border-radius: 4px; 
             padding: 0 4px;
-            color: #4f46e5;
-            font-weight: 600;
         }
         
         body.dark .highlight { 
-            background: rgba(129, 140, 248, 0.3);
-            color: #818cf8;
+            background: rgba(100, 150, 255, 0.3);
         }
         
         .hidden { display: none; }
@@ -419,100 +420,83 @@
             background: none;
             border: none;
             font-size: 16px;
-            color: #4f46e5;
+            color: #0b1a33;
             cursor: pointer;
             padding: 10px 0;
             margin-bottom: 12px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.2s;
-            border-radius: 10px;
-            padding: 10px 16px;
         }
         
         .netflix-back:hover { 
-            background: rgba(79, 70, 229, 0.1);
-            opacity: 1;
+            opacity: 0.6;
         }
         
         body.dark .netflix-back { 
-            color: #818cf8; 
-        }
-        
-        body.dark .netflix-back:hover {
-            background: rgba(129, 140, 248, 0.15);
+            color: #e0e0e0; 
         }
         
         .netflix-title { 
             text-align: center; 
             font-size: 28px; 
             font-weight: 700; 
-            color: #1a202c; 
+            color: #0b1a33; 
             margin-bottom: 24px;
             transition: color 0.3s ease; 
         }
         
         body.dark .netflix-title { 
-            color: #f7fafc; 
+            color: #e0e0e0; 
         }
         
         .netflix-toc { 
-            background: #f7fafc; 
+            background: #f8fafc; 
             border-radius: 16px; 
             padding: 20px; 
             margin-bottom: 30px;
             transition: background 0.3s ease;
-            border: 1px solid #edf2f7;
         }
         
         body.dark .netflix-toc { 
-            background: #2d3748;
-            border-color: #4a5568;
+            background: #2a2a2a;
         }
         
         .netflix-toc-title { 
             font-weight: 600; 
             font-size: 13px; 
-            color: #718096; 
+            color: #6b7a8f; 
             margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         body.dark .netflix-toc-title { 
-            color: #a0aec0; 
+            color: #aaa; 
         }
         
         .netflix-toc a { 
             display: block; 
             padding: 10px 12px; 
-            color: #2d3748; 
+            color: #0b1a33; 
             text-decoration: none; 
             font-weight: 500; 
             font-size: 14px; 
-            border-radius: 8px;
-            margin-bottom: 4px;
-            transition: all 0.2s; 
+            border-bottom: 1px solid #edf2f7;
+            transition: opacity 0.2s; 
         }
         
         .netflix-toc a:last-child { 
-            margin-bottom: 0;
+            border-bottom: none;
         }
         
         .netflix-toc a:hover { 
-            background: #edf2f7;
-            color: #4f46e5;
+            opacity: 0.6;
         }
         
         body.dark .netflix-toc a { 
-            color: #e2e8f0; 
-        }
-        
-        body.dark .netflix-toc a:hover { 
-            background: #1a202c;
-            color: #818cf8;
+            color: #e0e0e0;
+            border-bottom-color: #444;
         }
 
         .netflix-article { 
@@ -525,31 +509,28 @@
         }
         
         .netflix-article .heading { 
-            text-align: left; 
+            text-align: center; 
             font-size: 18px; 
             font-weight: 700; 
-            color: #1a202c; 
+            color: #0b1a33; 
             margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e2e8f0;
             transition: color 0.3s ease; 
         }
         
         body.dark .netflix-article .heading { 
-            color: #f7fafc;
-            border-bottom-color: #4a5568;
+            color: #e0e0e0;
         }
         
         .netflix-article .text { 
             font-size: 15px; 
             line-height: 1.7; 
-            color: #4a5568; 
+            color: #1e293b; 
             white-space: pre-wrap; 
             transition: color 0.3s ease; 
         }
         
         body.dark .netflix-article .text { 
-            color: #cbd5e0; 
+            color: #ccc; 
         }
         
         .netflix-divider { 
@@ -559,7 +540,7 @@
         }
         
         body.dark .netflix-divider { 
-            border-top-color: #4a5568; 
+            border-top-color: #444; 
         }
 
         /* ===== MENU ===== */
@@ -569,8 +550,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -590,13 +570,12 @@
             max-width: 320px;
             height: 100%;
             background: #fff;
-            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
             transform: translateX(-100%);
             transition: transform 0.35s ease;
             z-index: 1000;
             padding: 32px 24px;
             overflow-y: auto;
-            border-radius: 0 20px 20px 0;
         }
         
         .menu-panel.open { 
@@ -604,19 +583,17 @@
         }
         
         body.dark .menu-panel { 
-            background: #1a202c; 
+            background: #1e1e1e; 
         }
         
         .menu-close {
             background: none;
             border: none;
             font-size: 24px;
-            color: #4a5568;
+            color: #0b1a33;
             cursor: pointer;
             margin-bottom: 32px;
             padding: 8px;
-            border-radius: 10px;
-            transition: all 0.2s;
             width: 40px;
             height: 40px;
             display: flex;
@@ -624,49 +601,37 @@
             justify-content: center;
         }
         
-        .menu-close:hover {
-            background: #f7fafc;
-            color: #1a202c;
-        }
-        
         body.dark .menu-close { 
-            color: #a0aec0; 
-        }
-        
-        body.dark .menu-close:hover {
-            background: #2d3748;
-            color: #f7fafc;
+            color: #e0e0e0; 
         }
         
         .menu-item {
             font-size: 18px;
-            font-weight: 600;
-            color: #1a202c;
+            font-weight: 700;
+            color: #0b1a33;
             padding: 16px 14px;
-            border-radius: 12px;
-            margin-bottom: 8px;
+            border-bottom: 1px solid #edf2f7;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: opacity 0.2s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
         }
         
         .menu-item:hover { 
-            background: #f7fafc;
-            color: #4f46e5;
+            opacity: 0.6;
         }
         
         body.dark .menu-item { 
-            color: #f7fafc; 
-        }
-        
-        body.dark .menu-item:hover {
-            background: #2d3748;
-            color: #818cf8;
+            color: #e0e0e0;
+            border-bottom-color: #444;
         }
         
         .menu-item .sub { 
             font-weight: 400; 
             font-size: 13px; 
-            color: #a0aec0; 
+            color: #94a3b8; 
             margin-left: 8px; 
         }
 
@@ -686,7 +651,7 @@
             }
             
             .header-center .book-icon {
-                font-size: 28px;
+                font-size: 24px;
             }
             
             .netflix-title { 
@@ -750,15 +715,9 @@
         <button class="menu-close" id="menuClose">
             <i class="fas fa-times"></i>
         </button>
-        <div class="menu-item" data-target="netflix">
-            <i class="fas fa-play-circle" style="margin-right: 10px; color: #4f46e5;"></i>Netflix+
-        </div>
-        <div class="menu-item" style="opacity:0.4; cursor:default;">
-            <i class="fas fa-clock" style="margin-right: 10px;"></i>Скоро <span class="sub">в разработке</span>
-        </div>
-        <div class="menu-item" style="opacity:0.4; cursor:default;">
-            <i class="fas fa-clock" style="margin-right: 10px;"></i>Скоро <span class="sub">в разработке</span>
-        </div>
+        <div class="menu-item" data-target="netflix">Netflix+</div>
+        <div class="menu-item" style="opacity:0.4; cursor:default;">Скоро <span class="sub">в разработке</span></div>
+        <div class="menu-item" style="opacity:0.4; cursor:default;">Скоро <span class="sub">в разработке</span></div>
     </div>
 
     <script>
