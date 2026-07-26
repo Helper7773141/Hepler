@@ -86,12 +86,13 @@
             text-align: center;
         }
         .header-center .book-icon {
-            font-size: 28px;
-            color: #0b1a33;
-            display: block;
-            margin-bottom: 2px;
-            transition: color 0.3s ease;
-        }
+    font-size: 28px;
+    color: #0b1a33;
+    display: block;
+    margin-bottom: 2px;
+    transition: color 0.3s ease;
+    -webkit-text-stroke: 1px #0b1a33; /* ← И СЮДА ТОЖЕ */
+}
         body.dark .header-center .book-icon { color: #e0e0e0; }
         .header-center h1 {
             font-size: 36px;
@@ -140,13 +141,14 @@
             gap: 14px;
         }
         .book-header .book-icon {
-            font-size: 20px;
-            color: #0b1a33;
-            width: 24px;
-            text-align: center;
-            transition: color 0.3s ease;
-            font-weight: 400;
-        }
+    font-size: 20px;
+    color: #0b1a33;
+    width: 24px;
+    text-align: center;
+    transition: color 0.3s ease;
+    font-weight: 400;
+    -webkit-text-stroke: 1px #0b1a33; /* ← ЭТА СТРОЧКА УБИРАЕТ ЗАЛИВКУ */
+}
         body.dark .book-header .book-icon { color: #e0e0e0; }
         .book-title {
             font-weight: 600;
