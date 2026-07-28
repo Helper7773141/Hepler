@@ -442,11 +442,18 @@
         }
         
         .netflix-toc { 
-            background: #f8fafc; 
-            border-radius: 14px; 
-            padding: 16px; 
-            margin-bottom: 24px;
-        }
+    background: #f8fafc; 
+    border-radius: 14px; 
+    padding: 16px; 
+    margin-bottom: 24px;
+}
+
+/* ===== ТОЛЬКО ТЕЛЕФОН, ТОЛЬКО СВЕТЛАЯ ТЕМА ===== */
+@media (max-width: 480px) {
+    body:not(.dark) .netflix-toc { 
+        background: #dce4ef !important;
+    }
+}
         
         body.dark .netflix-toc { 
             background: #2a2a2a;
