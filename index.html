@@ -6,7 +6,7 @@
     <title>Helper</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== ВСЕ СТИЛИ (ТЕ ЖЕ, ЧТО И БЫЛИ) ===== */
+        /* ===== ВСЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -447,7 +447,6 @@
             margin-bottom: 24px;
         }
 
-        /* ===== ТОЛЬКО ТЕЛЕФОН, ТОЛЬКО СВЕТЛАЯ ТЕМА ===== */
         @media (max-width: 480px) {
             body:not(.dark) .netflix-toc { 
                 background: #dce4ef !important;
@@ -534,7 +533,7 @@
             border-top-color: #444; 
         }
 
-        /* ===== ПЕТЛЯ ПРИВЫЧКИ (диаграмма) ===== */
+        /* ===== ПЕТЛЯ ПРИВЫЧКИ ===== */
         .habit-loop {
             display: flex;
             justify-content: center;
@@ -546,11 +545,74 @@
             max-width: 300px;
             height: auto;
             display: block;
+            border-radius: 12px;
         }
 
         .habit-loop-dark { display: none; }
         body.dark .habit-loop-light { display: none; }
         body.dark .habit-loop-dark { display: block; }
+
+        /* ===== СПИСОК МАХАБХАРАТА ===== */
+        .mahabharata-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .mahabharata-list .item-row {
+            padding: 8px 16px;
+            margin: 4px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .mahabharata-list .item-num {
+            font-weight: 400;
+            font-size: 12px;
+            color: #6b7a8f;
+            min-width: 28px;
+            text-align: right;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        body.dark .mahabharata-list .item-num {
+            color: #a0aec0;
+        }
+
+        .mahabharata-list .item-text {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: #f8fafc;
+            color: #1e293b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        body.dark .mahabharata-list .item-text {
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        .mahabharata-list .item-text i {
+            font-style: italic;
+            color: #0b1a33;
+        }
+
+        body.dark .mahabharata-list .item-text i {
+            color: #e0e0e0;
+        }
+
+        .mahabharata-list .item-text b {
+            font-weight: 700;
+            color: #0b1a33;
+        }
+
+        body.dark .mahabharata-list .item-text b {
+            color: #e0e0e0;
+        }
 
         /* ===== MENU ===== */
         .menu-overlay {
@@ -774,6 +836,15 @@
             </div>
             <div id="chessArticles"></div>
         </div>
+
+        <!-- ===== МАХАБХАРАТА+ (БЕЗ ОГЛАВЛЕНИЯ) ===== -->
+        <div class="netflix-page" id="mahabharataPage">
+            <button class="netflix-back" id="mahabharataBack">
+                <i class="fa-solid fa-arrow-left"></i> Назад
+            </button>
+            <div class="netflix-title">Махабхарата+</div>
+            <ul class="mahabharata-list" id="mahabharataList"></ul>
+        </div>
     </div>
 
     <div class="menu-overlay" id="menuOverlay"></div>
@@ -786,6 +857,7 @@
         <div class="menu-item" data-target="habit">Сила привычки</div>
         <div class="menu-item" data-target="history">История стран</div>
         <div class="menu-item" data-target="chess">Шахматная доска</div>
+        <div class="menu-item" data-target="mahabharata">Махабхарата+</div>
     </div>
 
     <script>
@@ -804,7 +876,7 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
 
-        // ===== ДАННЫЕ КНИГ (КОНТУРНЫЕ ИКОНКИ) =====
+        // ===== ДАННЫЕ КНИГ =====
         const library = [
             { title: "ДЖЕФФРИ МУР", icon: "fa-regular fa-chart-bar", items: [
                 "<b>4 зоны</b><br>• <b>Зона производительности</b> – действующий бизнес, который приносит > 90% выручки и прибыли. Главная задача: выполнять текущие планы продаж и защищать долю рынка.<br>• <b>Зона продуктивности.</b> Задача: повышать прибыль первой зоны.<br>• <b>Зона инкубации.</b> «Стартапы» внутри компании. Задача: разрабатывать прорывные продукты и проверять их на рынке, финансируя как венчурные проекты.<br>• <b>Зона трансформации.</b> Сюда выходит один успешный проект из инкубации, чтобы его быстро масштабировать в новое направление бизнеса.",
@@ -815,7 +887,7 @@
             ] },
             { title: "NETFLIX", icon: "fa-regular fa-circle-play", items: [
                 "<span style='text-decoration: underline; font-weight: 400;'>Всегда действуйте в интересах компании</span>",
-                "Почему люди молчат? Страх что вас не поддержат, что за вами закрепится плохая репутация, неприязнь тяжелых разговоров, вас посчитают выскочкой. Но в нашей корпоративной культуре, <i>промолчать - значит подвести себя и всю команду</i>",
+                "Почему люди молчат? Страх что вас не поддержут, что за вами закрепится плохая репутация, неприязнь тяжелых разговоров, вас посчитают выскочкой. Но в нашей корпоративной культуре, <i>промолчать - значит подвести себя и всю команду</i>",
                 "С древних времён люди стремились быть частью группы, поэтому когда нас критикуют, срабатывает первобытный инстинкт, ощущение, что нас отвергнут. Именно поэтому нам так тяжело воспринимать критику",
                 "Цикл обратной связи — один из самых эффективных инструментов для повышения качества работы",
                 "<i>Чем выше должность, тем реже человек слышит критику в свой адрес</i> и тем выше вероятность, что однажды он совершит ошибку, которая станет очевидна всем, кроме него (пример с голым королем)",
@@ -1303,6 +1375,41 @@
             }
         ];
 
+        // ============================================================
+        // МАХАБХАРАТА+ (БЕЗ ОГЛАВЛЕНИЯ)
+        // ============================================================
+        const mahabharataQuotes = [
+            "Жизненная реализация (дхарма) заключается в следовании своему долгу шаг за шагом, без привязанности к плодам своих действий",
+            "Делай то, что должен, но не становись рабом результата",
+            "Пандавы побеждают не ради трона (который приносит лишь горечь потерь), а потому что действуют по законам справедливости",
+            "Сама Бхагавад-гита (часть эпоса) учит: сосредоточьтесь на правильном действии в каждый момент времени, а успех или неудачу оставьте вне своего контроля",
+            "Жить в согласии со своим предназначением. Лучше исполнить свой долг несовершенно, чем в совершенстве исполнить чужой",
+            "Где дхарма — там победа. Короткая фраза, проходящая красной нитью через весь эпос. Не всегда побеждает сильнейший, но истинная победа возможна только на стороне справедливости",
+            "Способность прощать требует большего мужества, чем месть. Прощение = свобода",
+            "Покой приходит не к тому, кто получил всё, чего желал, а к тому, кто освободился от желаний",
+            "Победив других, можно стать сильнее; но только победив себя, становишься непобедимым",
+            "Дхарма защищает того, кто защищает дхарму",
+            "Томас Эдисон: «Я не терпел поражений. Я просто нашел десять тысяч способов, которые не работают»",
+            "«Ниточку может обрезать только тот, кто ее подвесил» — Михаил Афанасьевич Булгаков",
+            "Только холодильник победит телевизор, то есть только голод победит развлечение. Сытое общество всегда порождает культуру, для кого-то это театры, для кого-то на картины посмотреть, а для кого-то футбол или бои (театр жестокости)",
+            "«Политика» — Аристотель: Из перечисленных родов деятельности самым искусным является тот, при котором наименьшее значение имеет случайность; самым низменным — тот, при котором получают повреждения тела; самым рабским — тот, где требуется исключительное применение физической силы",
+            "Пример про зайца: если он должен пробежать милю, то сначала половину, потом половину от половины — он должен пробежать бесконечный ряд конечных отрезков",
+            "Как говорил когда-то Нильс Бор, невероятно умный человек, занимающийся ядерной физикой и квантовой механикой: «Есть вещи настолько серьезные, что остается только смеяться»",
+            "«Предполагать, что человек может запомнить все, то же самое, что предполагать, что он может удержать в своем организме все то, что когда-то съел». Артур Шопенгауэр",
+            "Get busy living, or get busy dying",
+            "Лев Толстой, Анна Каренина: «Все счастливые семьи похожи друг на друга, каждая несчастливая семья несчастлива по-своему»",
+            "Джордж Бокс: «В сущности, все модели неправильны, но некоторые полезны»",
+            "«Я жить хочу, чтоб мыслить и страдать» — Пушкин. Жизнь в дискомфорте. Гармония находится во всем. Например, бег или любой приятный вид спорта — это же страдание. Чтение, учение — для кого-то это все страдание и дискомфорт",
+            "Уинстон Черчилль: «Успех — это способность идти от поражения к поражению, не теряя энтузиазма»",
+            "Уинстон Черчилль отвечал с юмором про то, что сменял партию 3 раза: «Каждый может предать партию. Но чтобы снова в неё вернуться, нужен особый талант»",
+            "«Маленький принц» Антуан де Сент-Экзюпери: Если вы хотите построить корабль, Не надо будоражить народ, Отправлять собирать древесину, делить работу И отдавать приказы. Лучше научите людей тосковать По обширному и бесконечному морю",
+            "Самые достойные правители — это те, кто способен отказаться от абсолютной власти",
+            "«Тот, кто имеет зачем жить, выдержит почти любое как». Фридрих Ницше, Сумерки идолов. Эту мысль потом сделал центральной Виктор Франкл.",
+            "«Человек любит считать свои беды, но не считает своих радостей». Федор Михайлович, Записки из подполья.",
+            "«Не стоит ориентироваться на общественное мнение. Это не маяк, а блуждающие огни». Андре Моруа.",
+            "«Когда тебя предали — это всё равно что руки сломали. Простить можно, но вот обнять уже не получится». Толстой."
+        ];
+
         // ===== РЕНДЕР NETFLIX+ =====
         const netflixPage = document.getElementById('netflixPage');
         const netflixToc = document.getElementById('netflixToc');
@@ -1470,6 +1577,27 @@
             chessArticlesContainer.appendChild(wrapper);
         });
 
+        // ===== РЕНДЕР МАХАБХАРАТА+ =====
+        const mahabharataPage = document.getElementById('mahabharataPage');
+        const mahabharataList = document.getElementById('mahabharataList');
+
+        mahabharataQuotes.forEach((text, index) => {
+            const row = document.createElement('li');
+            row.className = 'item-row';
+            
+            const numSpan = document.createElement('span');
+            numSpan.className = 'item-num';
+            numSpan.textContent = index + 1;
+            
+            const textSpan = document.createElement('span');
+            textSpan.className = 'item-text';
+            textSpan.textContent = text;
+            
+            row.appendChild(numSpan);
+            row.appendChild(textSpan);
+            mahabharataList.appendChild(row);
+        });
+
         // ===== НАВИГАЦИЯ =====
         const menuToggle = document.getElementById('menuToggle');
         const menuOverlay = document.getElementById('menuOverlay');
@@ -1508,6 +1636,7 @@
             historyPage.classList.remove('active');
             habitPage.classList.remove('active');
             chessPage.classList.remove('active');
+            mahabharataPage.classList.remove('active');
             netflixPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1528,6 +1657,7 @@
             historyPage.classList.remove('active');
             habitPage.classList.remove('active');
             chessPage.classList.remove('active');
+            mahabharataPage.classList.remove('active');
             pgPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1548,6 +1678,7 @@
             pgPage.classList.remove('active');
             habitPage.classList.remove('active');
             chessPage.classList.remove('active');
+            mahabharataPage.classList.remove('active');
             historyPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1568,6 +1699,7 @@
             pgPage.classList.remove('active');
             historyPage.classList.remove('active');
             chessPage.classList.remove('active');
+            mahabharataPage.classList.remove('active');
             habitPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1588,12 +1720,34 @@
             pgPage.classList.remove('active');
             historyPage.classList.remove('active');
             habitPage.classList.remove('active');
+            mahabharataPage.classList.remove('active');
             chessPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         chessBack.addEventListener('click', () => {
             chessPage.classList.remove('active');
+            mainPage.style.display = 'block';
+            mainHeader.style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Махабхарата+
+        document.querySelector('.menu-item[data-target="mahabharata"]').addEventListener('click', () => {
+            closeMenu();
+            mainPage.style.display = 'none';
+            mainHeader.style.display = 'none';
+            netflixPage.classList.remove('active');
+            pgPage.classList.remove('active');
+            historyPage.classList.remove('active');
+            habitPage.classList.remove('active');
+            chessPage.classList.remove('active');
+            mahabharataPage.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        mahabharataPage.querySelector('.netflix-back').addEventListener('click', () => {
+            mahabharataPage.classList.remove('active');
             mainPage.style.display = 'block';
             mainHeader.style.display = 'flex';
             window.scrollTo({ top: 0, behavior: 'smooth' });
